@@ -1,0 +1,6 @@
+*.app
+DerivedData
+.DS_Store
+*.DS_Store
+*.xcuserdatad
+project.xcworkspace
