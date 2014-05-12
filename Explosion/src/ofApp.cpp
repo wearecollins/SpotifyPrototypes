@@ -27,13 +27,39 @@ bool bNeedToRandomize = false;
 float intensity = 0;
 float mag = 0;
 
+ofVec2f source, endPoint;
+float rotateOffset = 0.0;
+bool bDirUp = false;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
     render.allocate(ofGetWidth() * 2.0, ofGetHeight() * 2.0);
     ofSetLogLevel(OF_LOG_VERBOSE);
-    charles.loadImage("charles.png");
-    path.load("charles.svg");
+    
+    //charles
+    
+//    charles.loadImage("kids.png");
+//    path.load("kids.svg");
+    //source.set(ofGetWidth()/2.0, ofGetHeight() * .85);
+    //endPoint.set(ofGetWidth()/2.0 + ofRandom(-300,300), 0);
+    // bDirUp = true;
+    //rotateOffset = 0.0;
+    
+    // kids
+//    charles.loadImage("kids.png");
+//    path.load("kids.svg");
+//    source.set(charles.width/2.0, charles.height/2.0);
+//    endPoint.set(ofGetWidth(), ofGetHeight()/2.0 + ofRandom(-300,300));
+//    rotateOffset = 270.0;
 
+    // yeezus
+    charles.loadImage("yeezy.png");
+    path.load("yeezy.svg");
+    source.set(charles.width/2.0, ofGetHeight() - charles.height/2.0);
+    endPoint.set(ofGetWidth()  + ofRandom(-300,300), ofRandom(-300,300));
+    rotateOffset = 300.0;
+    
     int n = path.getNumPath();
     for ( auto i=0; i<n; i++){
         ofPath & p = path.getPathAt(i);
@@ -262,7 +288,7 @@ void ofApp::draw(){
     ofEnableAlphaBlending();
     
     ofPushMatrix();
-    ofTranslate(ofGetWidth()/2.0, ofGetHeight() * .65);
+    ofTranslate(source);
     ofTranslate(-charles.width/2.0, -charles.height/2.0);
     charles.draw(0,0);
     
@@ -285,11 +311,15 @@ void ofApp::randomize(){
     circleScales.clear();
     modes.clear();
     burstMesh.clear();
-    // setup burst
-    ofVec2f source(ofGetWidth()/2.0, ofGetHeight() * .85);
-    ofVec2f endPoint(ofGetWidth()/2.0 + ofRandom(-300,300), 0);
     
-    float start = ofRandom(30, 80); float end = ofRandom(100, 180);
+    // should be a switch here based on OG endpoint
+    
+    endPoint.set(ofGetWidth()  + ofRandom(-300,300), ofRandom(-300,300));
+    
+    // setup burst
+    
+    float start = rotateOffset + ofRandom(30, 80);
+    float end = rotateOffset + ofRandom(100, 180);
     float num = ofRandom(3, 1000);
     float inc = (end - start) / num;
     float rad = 1000;
@@ -307,7 +337,7 @@ void ofApp::randomize(){
     
     center.setSaturation(.5);
     center.setBrightness(.9);
-    center.setHue(ofRandomuf());
+    center.setHue(color.getHue() + ofRandom(-.3,.3));
     
     ofBackground(255);//center * .1);
     
@@ -318,7 +348,13 @@ void ofApp::randomize(){
     int index = 0;
     
     bLines = ofRandom(100) > 60 ? false : true;
+    bool bBandW = ofRandom(100) > 80 ? true : false;
     moveType = floor( ofRandom(0, 3));
+    
+    if ( bBandW ){
+        color.setSaturation(0.0);
+        center.setSaturation(0.0);
+    }
     
     if ( bParallel ){
         if (!bLines) maxPts *= ofGetHeight()/(pointSize * 20);
@@ -326,6 +362,9 @@ void ofApp::randomize(){
         end = num = 75/lineWidth;
         inc = 1;
         bUseShader = ofRandom(100) > 80 ? true : false;
+        
+        bool bPerp = ofRandom(100) > 60 ? true : false;
+        
         for ( float a = start; a<end; a += inc){
             float liveRad = 0;
             for ( int i=0; i<maxPts; i++){
@@ -341,8 +380,9 @@ void ofApp::randomize(){
                 //        burstMesh.addVertex(source);
                 ofVec3f v;
                 v.x = ofMap(i, 0, maxPts, source.x, endPoint.x);
-                v.x += ofMap(a, start, end, -(lineWidth * (num) * 2.0), (lineWidth * (num) * 2.0));
                 v.y = ofMap(i, 0, maxPts, source.y, endPoint.y);
+                if ( (bDirUp && !bPerp) || bPerp ) v.x += ofMap(a, start, end, -(lineWidth * (num) * 2.0), (lineWidth * (num) * 2.0));
+                else v.y += ofMap(a, start, end, -(lineWidth * (num) * 2.0), (lineWidth * (num) * 2.0));
                 
                 c.lerp(center, ofMap(abs(v.distance(source)), 0, ofGetWidth()/2.0, 0.0, 1.0));
                 //c.setHue(c.getHue() + ofSignedNoise(v.x + i ) * .75);
@@ -403,7 +443,7 @@ void ofApp::randomize(){
 //                }
                 
                 c.lerp(center, ofMap(abs(v.distance(source)), 0, ofGetWidth()/2.0, 0.0, 1.0));
-                c.setHue(c.getHue() + ofSignedNoise(v.x + i ) * .75);
+                c.setHue(c.getHue() + ofSignedNoise(v.x + i ) * .1);
                 c.a = bUseShader ? ofNoise( -sin( ofDegToRad(a)) ) : 1.0;
                 //            c.a = .2;
                 
@@ -413,7 +453,7 @@ void ofApp::randomize(){
                     texScales.push_back(ofRandom(.5,maxScale));
                     circleScales.push_back(ofRandom(0.0,1.0));
                     burstMesh.addColor(c);
-                    if ( i > 0 && ofRandom(100) > density && fabs( v.distance(source) ) > 300 ){
+                    if ( i > 0 && ofRandom(100) > density && fabs( v.distance(source) ) > 200 ){
                         burstMesh.addIndex(index-1);
                         burstMesh.addIndex(index);
                     }
