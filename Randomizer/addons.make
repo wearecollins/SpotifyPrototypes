@@ -1,3 +1,0 @@
-ofxSvg
-ofxXmlSettings
-ofxUI
