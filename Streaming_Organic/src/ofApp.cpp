@@ -5,85 +5,183 @@ float minArea   = 0;
 float maxArea   = 1920 * 1080;
 
 int numFinder   = 3;
+int numIterations = 1;
 
 bool bDrawPhoto = true;
+bool bRandomoze = false;
+bool bRotate = false;
+bool bOffset = false;
+
+float rotateInc = 3.0;
+float offset    = 10.0;
 
 float contrast = 1.0;
 float lastContrast = -1;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    float scale = ((ofAppGLFWWindow*)ofGetWindowPtr())->getPixelScreenCoordScale();
+    if ( scale > 1.0 ){
+        ofSetWindowShape(ofGetWidth() * 1.5, ofGetHeight() * 1.5);
+    }
+    
     ofBackground(255);
-    gui = new ofxUICanvas(0,0, ofGetWidth()/4, ofGetHeight());
+    int x = 0;
+    int y = 0;
     for ( int i=0; i<numFinder; i++){
+        ofxUICanvas * gui = new ofxUICanvas(x,y, ofGetWidth()/4, ofGetHeight() * .75);
         contourFinders.push_back( new ThreadedContourFinder());
         gui->addMinimalSlider ("threshold_"+ofToString(i), 0, 255, &contourFinders[i]->threshold);
         gui->addMinimalSlider("smoothing_"+ofToString(i), 0, 255, &contourFinders[i]->polylineSimplify);
         gui->addMinimalSlider("minArea", 0, ofGetWidth() * ofGetHeight(), &contourFinders[i]->minArea);
         gui->addMinimalSlider("maxArea", 0, ofGetWidth() * ofGetHeight(), &contourFinders[i]->maxArea);
         gui->addMinimalSlider("contrast", .1, 3.0, &contourFinders[i]->contrast);
+        gui->addMinimalSlider("scale", 1.0, 3.0, &contourFinders[i]->scale);
         gui->addToggle("invert", &contourFinders[i]->bInvert);
+        gui->addToggle("warp image", &contourFinders[i]->bDoWarp);
+        gui->addToggle("snap to edge", &contourFinders[i]->bEdge);
+        gui->addToggle("map image", &contourFinders[i]->bMapImage);
+        gui->addToggle("tint", &contourFinders[i]->bTint);
+        gui->addToggle("Filter: gaussian", &contourFinders[i]->filters[0]->bActive);
+        gui->addMinimalSlider("Filter: gaussian (amount)", 1.0, 11.0, &contourFinders[i]->filters[0]->amount);
+        gui->addToggle("Filter: laplacian", &contourFinders[i]->filters[1]->bActive);
+        gui->addMinimalSlider("Filter: laplacian (amount)", 1.0, 11.0, &contourFinders[i]->filters[1]->amount);
+        gui->addToggle("Filter: dilate", &contourFinders[i]->filters[2]->bActive);
+        gui->addMinimalSlider("Filter: dilate (amount)", 1.0, 11.0, &contourFinders[i]->filters[2]->amount);
+        
+        gui->addIntSlider("windingMode", OF_POLY_WINDING_ODD, OF_POLY_WINDING_ABS_GEQ_TWO, &contourFinders[i]->windingMode);
+        gui->addSpacer();
+        
+        
+        contourFinders[i]->setup();
+        guis.push_back(gui);
+        
+        x += ofGetWidth()/4;
+        if ( x + ofGetWidth()/4 > ofGetWidth() ){
+            x = 0;
+            y += ofGetHeight()/4;
+        }
+    }
+    
+    randomizeColors();
+    
+    ofxUICanvas * gui = new ofxUICanvas(x,y, ofGetWidth()/4, ofGetHeight()/3);
+    gui->addSpacer();
+    gui->addMinimalSlider("Contrast", 0.01, 3.0, &contrast);
+    gui->addToggle("Draw phot", &bDrawPhoto);
+    gui->addToggle("Randomize Colors", &bRandomoze);
+    gui->addToggle("Rotate parts", &bRotate);
+    gui->addMinimalSlider("Rotate increment", 0.01, 90.0, &rotateInc);
+    gui->addToggle("Offset part", &bOffset);
+    gui->addMinimalSlider("Offset increment", 0.01, 100.0, &offset);
+    gui->addIntSlider("Num draw iterations", 1, 100, &numIterations);
+    guis.push_back(gui);
+    
+    
+    int i=0;
+    for ( auto * gui : guis ){
+        gui->loadSettings("settings_"+ofToString(i)+".xml");
+        i++;
+    }
+    
+    drawImg.resize(3);
+    imgs.resize(3);
+}
+
+//--------------------------------------------------------------
+void ofApp::randomizeColors(){
+    colors.clear();
+    for ( int i=0; i<numFinder; i++){
         ofColor c(ofRandom(255),ofRandom(255),ofRandom(255));
         c.setSaturation(100);
         c.setBrightness(255);
         colors.push_back(c);
-        
-        contourFinders[i]->setup();
     }
-    gui->addSpacer();
-    gui->addMinimalSlider("Contrast", 0.01, 3.0, &contrast);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     ofSetWindowTitle(ofToString(ofGetFrameRate(),3));
     if ( toLoad != "" ){
-        img.loadImage(toLoad);
+        imgs[whichToLoad].loadImage(toLoad);
         toLoad = "";
         lastContrast = -1;
-        for (int i=0; i<numFinder; i++){
-            colors[i].set(ofRandom(255),ofRandom(255),ofRandom(255));
-            colors[i].setSaturation(100);
-            colors[i].setBrightness(255);
-            contourFinders[i]->loadPixels(img);
+        if ( whichToLoad == 0 ){
+            for (int i=0; i<numFinder; i++){
+                contourFinders[i]->loadPixels(imgs[whichToLoad]);
+            }
         }
     }
     
-    if ( img.isAllocated()){
-        cv::Mat cv = ofxCv::toCv(img);
-        cv::Mat dest;
-        if ( contrast != lastContrast ){
-            cv.convertTo(dest, -1,contrast,0);
-            ofxCv::toOf(dest, drawImg);
-            drawImg.update();
-        }
-        lastContrast = contrast;
+    if ( bRandomoze ){
+        randomizeColors();
+        bRandomoze = false;
     }
+    
+    int which = 0;
+    for ( auto & img : imgs ){
+        if ( img.isAllocated()){
+            cv::Mat cv = ofxCv::toCv(img);
+            cv::Mat dest;
+            if ( contrast != lastContrast ){
+                cv.convertTo(dest, -1,contrast,0);
+                ofxCv::toOf(dest, drawImg[which]);
+                drawImg[which].update();
+            }
+        }
+        which++;
+    }
+    lastContrast = contrast;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetColor(255);
-    if ( bDrawPhoto && drawImg.isAllocated()) drawImg.draw(0,0);
-    int i=0;
-    for ( auto * f : contourFinders ){
-        ofPushMatrix();
-        ofTranslate(ofGetWidth()/2.0, ofGetHeight()/2.0);
-        //ofRotate(i*5);
-        ofTranslate(-ofGetWidth()/2.0, -ofGetHeight()/2.0);
-        //ofTranslate(i*10.0, i*10.0);
-        ofSetColor(colors[i]);
-        drawImg.bind();
-        f->getMesh().draw();
-        drawImg.unbind();
-        ofPopMatrix();
-        i++;
+    if ( bDrawPhoto && drawImg[0].isAllocated()) drawImg[0].draw(0,0);
+    for ( int j=0; j<numIterations; j++){
+        int i=0;
+        for ( auto * f : contourFinders ){
+            f->update();
+            ofPushMatrix();
+            ofTranslate(ofGetWidth()/2.0, ofGetHeight()/2.0);
+            if ( bRotate ) ofRotate(j*rotateInc);
+            ofTranslate(-ofGetWidth()/2.0, -ofGetHeight()/2.0);
+            if (bOffset) ofTranslate(j*offset, j*offset);
+            if ( f->bTint ) ofSetColor(colors[i]);
+            else ofSetColor(255);
+            if ( f->bMapImage ) drawImg[i].bind();
+            f->getMesh().draw();
+            if ( f->bMapImage ) drawImg[i].unbind();
+            ofPopMatrix();
+            
+            i++;
+        }
+    }
+    
+    if ( guis[0]->isVisible() ){
+        ofDisableDepthTest();
+        int i=0;
+        for ( auto * f : contourFinders ){
+            ofSetColor(255);
+            f->draw(0, i * 300, 300);
+            i++;
+        }
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if ( key == 'g' ) gui->toggleVisible();
+    if ( key == 'g' ){
+        for ( auto * gui : guis ){
+            gui->toggleVisible();
+        }
+    } else if ( key == 's' ){
+        int i=0;
+        for ( auto * gui : guis ){
+            gui->saveSettings("settings_"+ofToString(i)+".xml");
+            i++;
+        }
+    }
     else if ( key == 'p' ) bDrawPhoto = !bDrawPhoto;
 }
 
@@ -124,6 +222,7 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
+    whichToLoad = dragInfo.position.x < ofGetWidth()/3.0 ? 0 : (dragInfo.position.x < ofGetWidth() * 2/3.0 ? 1 : 2);
     for ( auto & s : dragInfo.files ){
         toLoad = s;
         break;

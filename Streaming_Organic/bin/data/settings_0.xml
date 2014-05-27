@@ -1,0 +1,90 @@
+<Widget>
+    <Kind>25</Kind>
+    <Name>threshold_0</Name>
+    <Value>251.915328979</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>smoothing_0</Name>
+    <Value>14.395160675</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>minArea</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>maxArea</Name>
+    <Value>786432.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>contrast</Name>
+    <Value>3.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>scale</Name>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>invert</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>warp image</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>snap to edge</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>map image</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>tint</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Filter: gaussian</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>Filter: gaussian (amount)</Name>
+    <Value>11.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Filter: laplacian</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>Filter: laplacian (amount)</Name>
+    <Value>3.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Filter: dilate</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>Filter: dilate (amount)</Name>
+    <Value>3.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>windingMode</Name>
+    <Value>2</Value>
+</Widget>

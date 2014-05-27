@@ -11,18 +11,24 @@
 
 #include "ofMain.h"
 #include "ofxCv.h"
+#include "CvFilters.h"
 
 class ThreadedContourFinder : public ofThread {
 public:
     
     ThreadedContourFinder() :
-    minArea(0),
-    maxArea(1920 * 1080),
-    threshold(150),
+    minArea(0), maxArea(1920 * 1080), threshold(150),
     polylineSimplify(100),
     contrast(1.0),
-    bInvert(true)
+    bInvert(true), bDoWarp(false), bEdge(true), bMapImage(false),
+    windingMode(OF_POLY_WINDING_POSITIVE),
+    scale(1.0), curScale(1.0),
+    bTint(true),
+    cvScale(.25)
     {
+        filters.push_back( new FilterGaussian() );
+        filters.push_back( new FilterLaplace() );
+        filters.push_back( new FilterDilate() );
     }
     
     ~ThreadedContourFinder(){
@@ -35,12 +41,40 @@ public:
         threshold = ofRandom(50,200);
         polylineSimplify = ofRandom(5,200);
         contrast = ofRandom(.9,3.0);
+        finder.setTargetColor(ofColor(255));
         startThread();
+    }
+    
+    void update(){
+        lock();
+        if ( !cvmattrack.empty() ){
+            ofxCv::toOf(cvmattrack, drawImage);
+            drawImage.update();
+        } else {
+        }
+        unlock();
+    }
+    
+    void draw( float x, float y, float wScale = -1 ){
+        if ( drawImage.isAllocated() ){
+            float w = drawImage.width;
+            float h = drawImage.height;
+            
+            if ( wScale != - 1){
+                w = wScale;
+                h *= (float) w/drawImage.width;
+            }
+            
+            drawImage.draw(x,y,w,h);
+        } else {
+        }
     }
     
     template <class T>
     void loadPixels( T & hasPixels ){
-        cvmat = ofxCv::toCv(hasPixels);
+        cv::Mat src = ofxCv::toCv(hasPixels);
+        ofxCv::resize(src, cvmat, cvScale, cvScale);
+        ofxCv::convertColor(cvmat, cvmatbw, cvmat.channels() == 3 ? CV_RGB2GRAY : CV_RGBA2GRAY);
         bForceFind = true;
     }
     
@@ -53,7 +87,9 @@ public:
     
     void findContours(){
         if ( curMinArea != minArea ||
-            curMaxArea != maxArea || curThreshold != threshold || curContrast != contrast){
+            curMaxArea != maxArea ||
+            curThreshold != threshold ||
+            curContrast != contrast){
             bForceFind = true;
         }
         
@@ -63,21 +99,29 @@ public:
         curContrast     = contrast;
         
         finder.setFindHoles(true);
-        finder.setAutoThreshold(true);
+        finder.setAutoThreshold(false);
         finder.setMinArea(curMinArea);
         finder.setMaxArea(curMaxArea);
-        finder.setThreshold(curThreshold);
+//        finder.setThreshold(curThreshold);
         
-        if ( !cvmat.empty() && bForceFind)
+        if ( !cvmatbw.empty() && bForceFind)
         {
+            cvmatbw.convertTo(cvmattrack, -1,curContrast,0);
             
-            cvmat.convertTo(cvmattrack, -1,curContrast,0);
-            finder.setInvert(bInvert);
+            for ( auto * filter : filters ){
+                if ( filter->bActive ){
+                    filter->process(cvmattrack);
+                }
+            }
+            
+            ofxCv::threshold(cvmattrack, curThreshold, bInvert);
+            
             finder.findContours(cvmattrack);
         }
         
-        if ( true || bForceFind || curSimplify != polylineSimplify ){
+        if ( bForceFind || curSimplify != polylineSimplify || curScale != scale){
             curSimplify     = polylineSimplify;
+            curScale = scale;
             vector<ofPolyline> poly = finder.getPolylines();
         
             bufferMesh.clear();
@@ -85,17 +129,54 @@ public:
             
             for ( auto & p : poly ){
                 ofPolyline smoothed = p.getSmoothed(polylineSimplify);
-                ofMesh m;
-                tess.tessellateToMesh( smoothed, OF_POLY_WINDING_ODD, m);
-                polyMeshes.push_back(m);
-                bufferMesh.append(m);
+                
+                smoothed.flagHasChanged();
+                if ( smoothed.getArea() != 0 ){
+                    if ( bEdge ){
+                        int i =0;
+                        int total = ofRandom(10,1000);
+                        for ( auto & p : smoothed.getVertices() ){
+                            p.x = 0;
+                            i++;
+                            if ( i >= total ) break;
+                        }
+                    }
+                    
+                    smoothed.flagHasChanged();
+                    if ( smoothed.getArea() != 0 ){
+                        if ( scale != 1.0 ){
+                            smoothed.flagHasChanged();
+                            ofPoint center = smoothed.getCentroid2D();
+                            for ( auto & p : smoothed.getVertices() ){
+                                ofVec2f dir = p - center;
+                                p += dir * scale;
+                            }
+                            smoothed.flagHasChanged();
+                        }
+                    }
+                    
+                    if ( cvScale != 1.0 ){
+                        for ( auto & p : smoothed.getVertices() ){
+                            p *= 1.0/cvScale;
+                        }
+                    }
+                    
+                    ofMesh m;
+                    tess.tessellateToMesh( smoothed, (ofPolyWindingMode) windingMode, m);
+                    polyMeshes.push_back(m);
+                    bufferMesh.append(m);
+                }
             }
             
-            for ( int i=0; i<bufferMesh.getNumVertices(); i++){
-                ofVec2f tex(bufferMesh.getVertex(i).x,bufferMesh.getVertex(i).y);
-                tex.x += ofSignedNoise((ofGetElapsedTimeMillis() *.001 + tex.x) * .01)*100.0;
-                tex.y += ofSignedNoise((ofGetElapsedTimeMillis() *.002 + tex.y) * .02)*100.0;
-                bufferMesh.addTexCoord( tex );
+            if ( bMapImage ){
+                for ( int i=0; i<bufferMesh.getNumVertices(); i++){
+                    ofVec2f tex(bufferMesh.getVertex(i).x,bufferMesh.getVertex(i).y);
+                    if ( bDoWarp ){
+                        tex.x += ofSignedNoise((ofGetElapsedTimeMillis() *.001 + tex.x) * .01)*100.0;
+                        tex.y += ofSignedNoise((ofGetElapsedTimeMillis() *.002 + tex.y) * .02)*100.0;
+                    }
+                    bufferMesh.addTexCoord( tex );
+                }
             }
             
             while(! lock() ){
@@ -111,19 +192,23 @@ public:
         return mesh;
     }
     
-    float minArea, maxArea, threshold, polylineSimplify, contrast;
+    float cvScale, scale, minArea, maxArea, threshold, polylineSimplify, contrast;
     
-    bool bInvert;
+    bool bInvert, bDoWarp, bEdge, bMapImage, bTint;
+    
+    int windingMode;
+    vector<CvFilter*> filters;
     
 protected:
-    float curMinArea, curMaxArea, curThreshold, curSimplify, curContrast;
+    float curMinArea, curMaxArea, curThreshold, curSimplify, curContrast, curScale;
     ofxCv::ContourFinder finder;
-    cv::Mat cvmat, cvmattrack;
+    cv::Mat cvmat, cvmatbw, cvmattrack;
     
     vector<ofMesh> polyMeshes;
     ofMesh mesh, bufferMesh;
     bool bForceFind;
     ofTessellator tess;
+    ofImage drawImage;
 };
 
 #endif

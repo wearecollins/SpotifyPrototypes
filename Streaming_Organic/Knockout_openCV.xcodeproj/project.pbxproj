@@ -137,6 +137,7 @@
 		0195A146192A829C0037082F /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		0195A147192A829C0037082F /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		0195A14E192A94110037082F /* ThreadedContourFinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadedContourFinder.h; sourceTree = "<group>"; };
+		01D182AF192CEA08002A6CF6 /* CvFilters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CvFilters.h; path = ../../Shared/CvFilters.h; sourceTree = "<group>"; };
 		01DAE5C2E3E0A74207B2BE49 /* saving.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = saving.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/saving.h; sourceTree = SOURCE_ROOT; };
 		02677FA320D6C63B228A7562 /* ofxUIWidgetWithLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIWidgetWithLabel.h; path = ../../../addons/ofxUI/src/ofxUIWidgetWithLabel.h; sourceTree = SOURCE_ROOT; };
 		02FF3B8D243CFB85AE0909EB /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUI2DGraph.cpp; path = ../../../addons/ofxUI/src/ofxUI2DGraph.cpp; sourceTree = SOURCE_ROOT; };
@@ -983,6 +984,7 @@
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				0195A14E192A94110037082F /* ThreadedContourFinder.h */,
+				01D182AF192CEA08002A6CF6 /* CvFilters.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

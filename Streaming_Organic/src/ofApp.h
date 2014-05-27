@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ThreadedContourFinder.h"
 #include "ofxUI.h"
+#include "ofAppGLFWWindow.h"
 
 class ofApp : public ofBaseApp{
 
@@ -21,9 +22,13 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-        vector<ThreadedContourFinder *> contourFinders;
-        ofxUICanvas * gui;
+        void randomizeColors();
     
-        ofImage img, drawImg;
+        vector<ThreadedContourFinder *> contourFinders;
+        vector<ofxUICanvas *> guis;
+    
+        vector<ofImage> imgs;
+        vector<ofImage> drawImg;
         string toLoad;
+        int whichToLoad;
 };
