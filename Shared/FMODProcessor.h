@@ -405,4 +405,71 @@ public:
         FMOD_Sound_Unlock(sound,pointer1, pointer2, length1, length2);
         return length1;
     }
+    
+    int getFrameInBytes(){
+        return numChannels * numBits / 8;
+    }
+    
+    int getSpectrumAtFrame(float *targetBuffer, float p, int bufferSize ){
+        void  *pointer1;
+        void  *pointer2;
+        unsigned int length1;
+        unsigned int length2;
+        
+        // numFrames = length
+        
+        unsigned int pos = p * length;
+        
+        // lock the buffer
+        int framesToBytes = numChannels * numBits / 8;
+        FMOD_Sound_Lock(sound, pos * framesToBytes, bufferSize, &pointer1, &pointer2, &length1, &length2);
+        
+        // when we're here, pointer1, pointer2, length1 and length2 will be populated.
+        // do something with the sound data found in pointer1.
+        // the sound data will have a length stored in length1
+        
+        cout << length1 << ":" << length2 << endl;
+        
+        if (pointer1){
+            intToFloat(targetBuffer, pointer1, length1, numBits);
+        }
+        
+        // unlock the buffer once you're done
+        FMOD_Sound_Unlock(sound,pointer1, pointer2, length1, length2);
+        return length1;
+    }
+    
+    int getSpectrumAtFrameLR(float *targetBufferL, float *targetBufferR, float p, int bufferSize ){
+        void  *pointer1;
+        void  *pointer2;
+        unsigned int length1;
+        unsigned int length2;
+        
+        // numFrames = length
+        
+        int framesToBytes = numChannels * numBits / 8;
+        unsigned int lenBytes = length * framesToBytes;
+        int count = lenBytes / bufferSize;
+        unsigned int pos = p * count * bufferSize;
+        
+        // lock the buffer
+        FMOD_Sound_Lock(sound, pos, bufferSize, &pointer1, &pointer2, &length1, &length2);
+        
+        // when we're here, pointer1, pointer2, length1 and length2 will be populated.
+        // do something with the sound data found in pointer1.
+        // the sound data will have a length stored in length1
+        
+        cout << length1 << ":" << length2 << endl;
+        
+        if (pointer1){
+            for (int i = 0; i < bufferSize; ++i){
+                targetBufferL[i] = ((int *)pointer1)[i] >> 16;
+                targetBufferR[i] = (((int *)pointer1)[i] << 16) >> 16;
+            }
+        }
+        
+        // unlock the buffer once you're done
+        FMOD_Sound_Unlock(sound,pointer1, pointer2, length1, length2);
+        return length1;
+    }
 };

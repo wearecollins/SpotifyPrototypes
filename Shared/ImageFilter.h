@@ -18,7 +18,7 @@ public:
     }
     
     virtual void process( ofImage & img ) = 0;
-    virtual void loadAndProcess( string image, bool bSameDir = false, string suffix = "processed" ){
+    virtual void loadAndProcess( string image, bool bThreaded = true, bool bSameDir = false, string suffix = "processed" ){
         
         ofFile f(image);
         dir = bSameDir ? f.getEnclosingDirectory() + "/" : "";
@@ -29,7 +29,12 @@ public:
         currentImage.setUseTexture(false);
         if ( currentImage.loadImage(image) ){
             bNeedToProcess = true;
-            startThread();
+            if ( bThreaded ) startThread();
+            else {
+                process( currentImage );
+                currentImage.saveImage( dir + name + "." + ext );
+                ofNotifyEvent(onProcessed, currentImage, this);
+            }
         }
     }
     
@@ -41,7 +46,7 @@ protected:
     ofImage     currentImage;
     string      dir, name, ext, suff;
     
-    void threadedFunction(){
+    virtual void threadedFunction(){
         while (isThreadRunning()){
             if ( bNeedToProcess ){
                 process( currentImage );
@@ -63,6 +68,16 @@ public:
         colorPairs.push_back(vector<ofColor>());
         colorPairs.back().push_back(ofColor(a));
         colorPairs.back().push_back(ofColor(b));
+    }
+    
+    void setColorPair( int index, ofColor a, ofColor b ){
+        if ( index < colorPairs.size()){
+            colorPairs[index].clear();
+            colorPairs[index].push_back(ofColor(a));
+            colorPairs[index].push_back(ofColor(b));
+        } else {
+            addColorPair(a, b);
+        }
     }
     
     vector<ofColor> * getColorPair( int index ){
@@ -91,8 +106,8 @@ public:
         ofPixelsRef p = img.getPixelsRef();
         
         int index = 0;
+        ofPixels pix;
         for ( auto pair : colorPairs ){
-            ofPixels pix;
             pix.setFromPixels(p.getPixels(), p.getWidth(), p.getHeight(), p.getNumChannels());
         
             pix.setImageType(OF_IMAGE_COLOR);
@@ -106,6 +121,7 @@ public:
             temp.saveImage( dir + name + "_" + ofToString( index ) + "." + ext );
             index++;
         }
+        img.setFromPixels(pix);
     }
     
     vector< vector<ofColor> > colorPairs;

@@ -13,7 +13,8 @@
 class Metaballs {
 public:
     
-    void setup(){
+    void setup( float rad = 300, float sep = 200.0 ){
+        separation = sep;
         numBalls = 20;
         color.set(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
         color.setSaturation(.5);
@@ -26,26 +27,27 @@ public:
         mesh.addIndex(0); mesh.addIndex(1); mesh.addIndex(2);
         mesh.addIndex(0); mesh.addIndex(3); mesh.addIndex(2);
         
-        ofVec2f center(ofGetWidth()/2.0 + ofRandom(-ofGetWidth()/10.0, ofGetWidth()/10.0),
-                       ofGetHeight()/2.0 + ofRandom(-ofGetHeight()/10.0, ofGetHeight()/10.0));
+        ofVec2f center(ofRandom(-ofGetWidth()/10.0, ofGetWidth()/10.0),
+                       ofRandom(-ofGetHeight()/10.0, ofGetHeight()/10.0));
         
         for ( int i=0; i<numBalls; i++){
-            radiuses[i].x = starts[i].x = center.x + (ofRandom(-300,300));
-            radiuses[i].y = starts[i].y = center.y + (ofRandom(-300, 300));
-            radiuses[i].z = (ofRandom(100., 600.0));
+            radiuses[i].x = starts[i].x = center.x + (ofRandom(-rad, rad));
+            radiuses[i].y = starts[i].y = center.y + (ofRandom(-rad, rad));
+            radiuses[i].z = (ofRandom(rad / 3.0, rad * 2.0));
         }
     }
     
     void update(){
         for ( int i=0; i<numBalls; i++){
-            radiuses[i].x = starts[i].x + ofSignedNoise(ofGetElapsedTimeMillis() * .0001 + i * .1) * 200.0;
-            radiuses[i].y = starts[i].y + ofSignedNoise(ofGetElapsedTimeMillis() * .0002 + i * .2) * 200.0;
+            radiuses[i].x = ofGetWidth()/2.0 + starts[i].x * separation/500.0 + ofSignedNoise(ofGetElapsedTimeMillis() * .0001 + i * .1) * separation;
+            radiuses[i].y = ofGetHeight()/2.0 + starts[i].y * separation/500.0 + ofSignedNoise(ofGetElapsedTimeMillis() * .0002 + i * .2) * separation;
         }
     }
     
     void draw(){
         ofPushMatrix();
         metaball.begin();
+        metaball.setUniform1i("numBalls", numBalls);
         metaball.setUniform3fv("balls", (float*) radiuses, numBalls);
         metaball.setUniform4f("color", color.r, color.g, color.b, color.a);
         mesh.draw();
@@ -54,12 +56,13 @@ public:
     }
     
     ofFloatColor color;
+    float separation;
     
 protected:
     ofMesh mesh;
     ofShader metaball;
     
-    ofVec3f radiuses[50];
-    ofVec3f starts[50];
+    ofVec3f radiuses[100];
+    ofVec3f starts[100];
     int     numBalls, ballSub;
 };

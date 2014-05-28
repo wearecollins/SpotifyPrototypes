@@ -4,6 +4,8 @@
 #include "Metaballs.h"
 
 #include "ofxCv.h"
+#include "ImageFilter.h"
+#include "ofxRCUtils.h"
 
 class ofApp : public ofBaseApp{
 
@@ -24,6 +26,11 @@ class ofApp : public ofBaseApp{
     
         ofFbo render;
         vector<Metaballs> metaballs;
+        vector<ofImage> images;
+        vector<ofImage> imagesProcessed;
     
         ofxCv::ContourFinder contourFinder;
+        ColorFilter imageProcessor;
+    
+        void randomizeColor();
 };
