@@ -5,6 +5,7 @@
 
 #include "ofxCv.h"
 #include "ImageFilter.h"
+#include "Logo.h"
 #include "ofxRCUtils.h"
 
 class ofApp : public ofBaseApp{
@@ -27,10 +28,17 @@ class ofApp : public ofBaseApp{
         ofFbo render;
         vector<Metaballs> metaballs;
         vector<ofImage> images;
-        vector<ofImage> imagesProcessed;
+        vector<string> imagesProcessed;
+    
+        ColorManager colors;
     
         ofxCv::ContourFinder contourFinder;
         ColorFilter imageProcessor;
     
+        Logo logo;
+    
+        void setupImage( ofImage & img );
         void randomizeColor();
+    
+        ScreenManager screen;
 };

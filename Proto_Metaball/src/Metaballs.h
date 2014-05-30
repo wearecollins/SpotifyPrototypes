@@ -14,6 +14,7 @@ class Metaballs {
 public:
     
     void setup( float rad = 300, float sep = 200.0 ){
+        center.set(ofGetWidth()/2.0, ofGetHeight()/2.0);
         separation = sep;
         numBalls = 20;
         color.set(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
@@ -38,9 +39,10 @@ public:
     }
     
     void update(){
+        float hRatio = (float)  ofGetHeight()/ofGetWidth();
         for ( int i=0; i<numBalls; i++){
-            radiuses[i].x = ofGetWidth()/2.0 + starts[i].x * separation/500.0 + ofSignedNoise(ofGetElapsedTimeMillis() * .0001 + i * .1) * separation;
-            radiuses[i].y = ofGetHeight()/2.0 + starts[i].y * separation/500.0 + ofSignedNoise(ofGetElapsedTimeMillis() * .0002 + i * .2) * separation;
+            radiuses[i].x = center.x + starts[i].x * separation/500.0 + ofSignedNoise(ofGetElapsedTimeMillis() * .0001 + i * .1) * separation;
+            radiuses[i].y = center.y + starts[i].y * separation/500.0 + ofSignedNoise(ofGetElapsedTimeMillis() * .0002 + i * .2) * (separation * hRatio);
         }
     }
     
@@ -57,6 +59,8 @@ public:
     
     ofFloatColor color;
     float separation;
+    
+    ofVec2f center;
     
 protected:
     ofMesh mesh;
