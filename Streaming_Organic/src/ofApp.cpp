@@ -1,6 +1,8 @@
 #include "ofApp.h"
 
 vector<ofColor> colors;
+int which       = 0;
+int whichLogo   = 0;
 float minArea   = 0;
 float maxArea   = 1920 * 1080;
 
@@ -11,6 +13,8 @@ bool bDrawPhoto = true;
 bool bRandomoze = false;
 bool bRotate = false;
 bool bOffset = false;
+bool bDrawLogo = false;
+bool bColorBg = false;
 
 float rotateInc = 3.0;
 float offset    = 10.0;
@@ -63,9 +67,10 @@ void ofApp::setup(){
         }
     }
     
+    colorMgr.setup();
     randomizeColors();
     
-    ofxUICanvas * gui = new ofxUICanvas(x,y, ofGetWidth()/4, ofGetHeight()/3);
+    ofxUICanvas * gui = new ofxUICanvas(x,y, ofGetWidth()/4, ofGetHeight()/2);
     gui->addSpacer();
     gui->addMinimalSlider("Contrast", 0.01, 3.0, &contrast);
     gui->addToggle("Draw phot", &bDrawPhoto);
@@ -75,6 +80,11 @@ void ofApp::setup(){
     gui->addToggle("Offset part", &bOffset);
     gui->addMinimalSlider("Offset increment", 0.01, 100.0, &offset);
     gui->addIntSlider("Num draw iterations", 1, 100, &numIterations);
+    gui->addToggle("Draw Logo", &bDrawLogo);
+    gui->addToggle("Color BG", &bColorBg);
+    gui->addIntSlider("Which BG color", 0, 2, &which);
+    gui->addIntSlider("Which Logo color", 0, 2, &whichLogo);
+    
     guis.push_back(gui);
     
     
@@ -86,17 +96,16 @@ void ofApp::setup(){
     
     drawImg.resize(3);
     imgs.resize(3);
+    
+    // LOGO
+    logo.setup();
+    screen.setup();
 }
 
 //--------------------------------------------------------------
 void ofApp::randomizeColors(){
     colors.clear();
-    for ( int i=0; i<numFinder; i++){
-        ofColor c(ofRandom(255),ofRandom(255),ofRandom(255));
-        c.setSaturation(100);
-        c.setBrightness(255);
-        colors.push_back(c);
-    }
+    colors = colorMgr.getHighLowTriplet();
 }
 
 //--------------------------------------------------------------
@@ -118,6 +127,14 @@ void ofApp::update(){
         bRandomoze = false;
     }
     
+    if ( screen.mode == 3){
+        logo.scale = (ofGetWidth() * .7) / logo.width;
+    } else if ( screen.mode == 4 ){
+        logo.scale = (ofGetWidth() * .9) / logo.width;
+    } else {
+        logo.scale = (ofGetWidth() * .8) / logo.width;
+    }
+    
     int which = 0;
     for ( auto & img : imgs ){
         if ( img.isAllocated()){
@@ -136,14 +153,24 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    logo.setColor(colors[whichLogo]);
+    if ( bColorBg ){
+        ofBackground(colors[which]);
+    } else {
+        ofBackground(255);
+    }
+    
     ofSetColor(255);
+    ofDisableDepthTest();
     if ( bDrawPhoto && drawImg[0].isAllocated()) drawImg[0].draw(0,0);
+    ofEnableDepthTest();
+    
     for ( int j=0; j<numIterations; j++){
         int i=0;
         for ( auto * f : contourFinders ){
             f->update();
             ofPushMatrix();
-            ofTranslate(ofGetWidth()/2.0, ofGetHeight()/2.0);
+            ofTranslate(ofGetWidth()/2.0, ofGetHeight()/2.0, -3 + 2 * i);
             if ( bRotate ) ofRotate(j*rotateInc);
             ofTranslate(-ofGetWidth()/2.0, -ofGetHeight()/2.0);
             if (bOffset) ofTranslate(j*offset, j*offset);
@@ -156,6 +183,11 @@ void ofApp::draw(){
             
             i++;
         }
+    }
+    
+    ofSetColor(255);
+    if ( bDrawLogo ){
+        logo.draw();
     }
     
     if ( guis[0]->isVisible() ){

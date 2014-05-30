@@ -1,12 +1,12 @@
 <Widget>
     <Kind>25</Kind>
     <Name>threshold_2</Name>
-    <Value>179.939514160</Value>
+    <Value>181.995956421</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
     <Name>smoothing_2</Name>
-    <Value>33.931453705</Value>
+    <Value>8.225806236</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
@@ -51,7 +51,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>tint</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

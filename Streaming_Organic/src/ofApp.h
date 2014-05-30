@@ -4,6 +4,9 @@
 #include "ThreadedContourFinder.h"
 #include "ofxUI.h"
 #include "ofAppGLFWWindow.h"
+#include "ImageManager.h"
+
+#include "Logo.h"
 
 class ofApp : public ofBaseApp{
 
@@ -31,4 +34,9 @@ class ofApp : public ofBaseApp{
         vector<ofImage> drawImg;
         string toLoad;
         int whichToLoad;
+    
+        ColorManager colorMgr;
+        ScreenManager screen;
+    
+        Logo logo;
 };

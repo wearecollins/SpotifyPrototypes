@@ -1,7 +1,7 @@
 <Widget>
     <Kind>25</Kind>
     <Name>Contrast</Name>
-    <Value>1.914919376</Value>
+    <Value>1.926975727</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -37,4 +37,14 @@
     <Kind>42</Kind>
     <Name>Num draw iterations</Name>
     <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Draw Logo</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Color BG</Name>
+    <Value>0</Value>
 </Widget>
