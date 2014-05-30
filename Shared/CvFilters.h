@@ -26,6 +26,17 @@ public:
     
 };
 
+class FilterContrast : public CvFilter {
+public:
+    
+    void process( cv::Mat & mat ){
+        float amt = amount;
+        cv::Mat p;
+        mat.convertTo(p, -1,amt,0);
+        mat = p;
+    }
+};
+
 class FilterGaussian : public CvFilter {
 public:
     
