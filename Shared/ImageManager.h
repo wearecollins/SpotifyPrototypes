@@ -27,6 +27,7 @@ public:
             for ( auto & s : toLoad ){
                 images.insert(images.begin(), ofImage());
                 images.front().loadImage(s);
+                ofNotifyEvent(onLoaded, images.front(), this);
             }
             runFilters();
             toLoad.clear();
@@ -79,6 +80,8 @@ public:
         which = which % imagesFiltered.size();
         imagesFiltered[which] = img;
     }
+    
+    ofEvent<ofImage> onLoaded;
     
 protected:
     vector<string>  toLoad;
