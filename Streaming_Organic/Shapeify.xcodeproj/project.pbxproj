@@ -18,6 +18,10 @@
 		0195A149192A829C0037082F /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0195A143192A829C0037082F /* tinyxmlerror.cpp */; };
 		0195A14A192A829C0037082F /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0195A144192A829C0037082F /* tinyxmlparser.cpp */; };
 		0195A14B192A829C0037082F /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0195A146192A829C0037082F /* ofxXmlSettings.cpp */; };
+		01B89A1E1938E8B200028FEF /* ofxLabFlexParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B89A141938E8B200028FEF /* ofxLabFlexParticle.cpp */; };
+		01B89A1F1938E8B200028FEF /* ofxLabFlexParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B89A161938E8B200028FEF /* ofxLabFlexParticleSystem.cpp */; };
+		01B89A201938E8B200028FEF /* ofxLabFlexQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B89A181938E8B200028FEF /* ofxLabFlexQuad.cpp */; };
+		01B89A211938E8B200028FEF /* ofxLabFlexVectorField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B89A1A1938E8B200028FEF /* ofxLabFlexVectorField.cpp */; };
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
 		10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A810DF70319A10353588F5DB /* Tracker.cpp */; };
@@ -137,7 +141,6 @@
 /* Begin PBXFileReference section */
 		011E372AEA4DFBC1A32C2851 /* all_indices.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = all_indices.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/all_indices.h; sourceTree = SOURCE_ROOT; };
 		014D6BBD193780820034E283 /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageManager.h; path = ../../Shared/ImageManager.h; sourceTree = "<group>"; };
-		014D6BBE193781D40034E283 /* ImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageFilter.h; path = ../../Shared/ImageFilter.h; sourceTree = "<group>"; };
 		014D6BC31937903B0034E283 /* src_colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = src_colors.cpp; sourceTree = "<group>"; };
 		014D6BC41937903B0034E283 /* svgtiny.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny.cpp; sourceTree = "<group>"; };
 		014D6BC51937903B0034E283 /* svgtiny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = svgtiny.h; sourceTree = "<group>"; };
@@ -162,7 +165,19 @@
 		0195A144192A829C0037082F /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		0195A146192A829C0037082F /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		0195A147192A829C0037082F /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
-		0195A14E192A94110037082F /* ThreadedContourFinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadedContourFinder.h; sourceTree = "<group>"; };
+		01B89A001938E71500028FEF /* ThreadedContourFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadedContourFinder.h; path = ../../Shared/ThreadedContourFinder.h; sourceTree = "<group>"; };
+		01B89A011938E73100028FEF /* Bubbles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bubbles.h; path = ../../Shared/Bubbles.h; sourceTree = "<group>"; };
+		01B89A021938E73100028FEF /* ImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageFilter.h; path = ../../Shared/ImageFilter.h; sourceTree = "<group>"; };
+		01B89A121938E8B200028FEF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		01B89A141938E8B200028FEF /* ofxLabFlexParticle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxLabFlexParticle.cpp; sourceTree = "<group>"; };
+		01B89A151938E8B200028FEF /* ofxLabFlexParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxLabFlexParticle.h; sourceTree = "<group>"; };
+		01B89A161938E8B200028FEF /* ofxLabFlexParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxLabFlexParticleSystem.cpp; sourceTree = "<group>"; };
+		01B89A171938E8B200028FEF /* ofxLabFlexParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxLabFlexParticleSystem.h; sourceTree = "<group>"; };
+		01B89A181938E8B200028FEF /* ofxLabFlexQuad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxLabFlexQuad.cpp; sourceTree = "<group>"; };
+		01B89A191938E8B200028FEF /* ofxLabFlexQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxLabFlexQuad.h; sourceTree = "<group>"; };
+		01B89A1A1938E8B200028FEF /* ofxLabFlexVectorField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxLabFlexVectorField.cpp; sourceTree = "<group>"; };
+		01B89A1B1938E8B200028FEF /* ofxLabFlexVectorField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxLabFlexVectorField.h; sourceTree = "<group>"; };
+		01B89A26193936F200028FEF /* Metaballs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Metaballs.h; path = ../../Shared/Metaballs.h; sourceTree = "<group>"; };
 		01D182AF192CEA08002A6CF6 /* CvFilters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CvFilters.h; path = ../../Shared/CvFilters.h; sourceTree = "<group>"; };
 		01DAE5C2E3E0A74207B2BE49 /* saving.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = saving.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/saving.h; sourceTree = SOURCE_ROOT; };
 		02677FA320D6C63B228A7562 /* ofxUIWidgetWithLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIWidgetWithLabel.h; path = ../../../addons/ofxUI/src/ofxUIWidgetWithLabel.h; sourceTree = SOURCE_ROOT; };
@@ -367,7 +382,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* Knockout_openCVDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Knockout_openCVDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* ShapeifyDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShapeifyDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofApp.cpp; path = src/ofApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ofApp.h; path = src/ofApp.h; sourceTree = SOURCE_ROOT; };
@@ -489,11 +504,13 @@
 		014D6BD11937910F0034E283 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				0195A14E192A94110037082F /* ThreadedContourFinder.h */,
+				01B89A011938E73100028FEF /* Bubbles.h */,
 				01D182AF192CEA08002A6CF6 /* CvFilters.h */,
+				01B89A021938E73100028FEF /* ImageFilter.h */,
 				014D6BBD193780820034E283 /* ImageManager.h */,
-				014D6BBE193781D40034E283 /* ImageFilter.h */,
 				014D6BD21937911E0034E283 /* Logo.h */,
+				01B89A26193936F200028FEF /* Metaballs.h */,
+				01B89A001938E71500028FEF /* ThreadedContourFinder.h */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -572,6 +589,31 @@
 			children = (
 				0195A146192A829C0037082F /* ofxXmlSettings.cpp */,
 				0195A147192A829C0037082F /* ofxXmlSettings.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		01B89A041938E8B200028FEF /* ofxLabFlexParticleSystem */ = {
+			isa = PBXGroup;
+			children = (
+				01B89A121938E8B200028FEF /* README.md */,
+				01B89A131938E8B200028FEF /* src */,
+			);
+			name = ofxLabFlexParticleSystem;
+			path = ../../../addons/ofxLabFlexParticleSystem;
+			sourceTree = "<group>";
+		};
+		01B89A131938E8B200028FEF /* src */ = {
+			isa = PBXGroup;
+			children = (
+				01B89A141938E8B200028FEF /* ofxLabFlexParticle.cpp */,
+				01B89A151938E8B200028FEF /* ofxLabFlexParticle.h */,
+				01B89A161938E8B200028FEF /* ofxLabFlexParticleSystem.cpp */,
+				01B89A171938E8B200028FEF /* ofxLabFlexParticleSystem.h */,
+				01B89A181938E8B200028FEF /* ofxLabFlexQuad.cpp */,
+				01B89A191938E8B200028FEF /* ofxLabFlexQuad.h */,
+				01B89A1A1938E8B200028FEF /* ofxLabFlexVectorField.cpp */,
+				01B89A1B1938E8B200028FEF /* ofxLabFlexVectorField.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -873,6 +915,7 @@
 			isa = PBXGroup;
 			children = (
 				6025FAF6414C2CA589764D26 /* ofxCv */,
+				01B89A041938E8B200028FEF /* ofxLabFlexParticleSystem */,
 				A0B90D3B0ADB9C1716816714 /* ofxOpenCv */,
 				014D6BD4193793560034E283 /* ofxRCUtils */,
 				014D6BBF1937903B0034E283 /* ofxSvg */,
@@ -1110,7 +1153,7 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* Knockout_openCVDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* ShapeifyDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1157,9 +1200,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* Knockout_openCV */ = {
+		E4B69B5A0A3A1756003C02F2 /* Shapeify */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "Knockout_openCV" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "Shapeify" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
@@ -1171,9 +1214,9 @@
 			dependencies = (
 				E4EEB9AC138B136A00A80321 /* PBXTargetDependency */,
 			);
-			name = Knockout_openCV;
+			name = Shapeify;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* Knockout_openCVDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* ShapeifyDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1184,7 +1227,7 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 			};
-			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Knockout_openCV" */;
+			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Shapeify" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1205,7 +1248,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* Knockout_openCV */,
+				E4B69B5A0A3A1756003C02F2 /* Shapeify */,
 			);
 		};
 /* End PBXProject section */
@@ -1288,6 +1331,8 @@
 				014D6BCC1937903B0034E283 /* src_colors.cpp in Sources */,
 				26874B150C8535AEA0F24C8C /* ofxUIImageSlider.cpp in Sources */,
 				FB8AA9FA6535767BE31806BC /* ofxUIImageToggle.cpp in Sources */,
+				01B89A1F1938E8B200028FEF /* ofxLabFlexParticleSystem.cpp in Sources */,
+				01B89A1E1938E8B200028FEF /* ofxLabFlexParticle.cpp in Sources */,
 				7C3DC84C9BFCBD2866DB2B6C /* ofxUILabel.cpp in Sources */,
 				FFD1EBFCA24DFB4E4427B4FE /* ofxUILabelButton.cpp in Sources */,
 				C30B3A2A37F8F32EE7318718 /* ofxUILabelToggle.cpp in Sources */,
@@ -1310,8 +1355,10 @@
 				1DAAC3FB4B98B08AE63F4687 /* ofxUISuperCanvas.cpp in Sources */,
 				5AE95ADB5549701423B6DA48 /* ofxUITabBar.cpp in Sources */,
 				C961BE22AB9A8CCF037FC18F /* ofxUITextArea.cpp in Sources */,
+				01B89A201938E8B200028FEF /* ofxLabFlexQuad.cpp in Sources */,
 				F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */,
 				04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */,
+				01B89A211938E8B200028FEF /* ofxLabFlexVectorField.cpp in Sources */,
 				E3A1109F67D711D6C256031E /* ofxUIToggleMatrix.cpp in Sources */,
 				60012C723B05938A3D388335 /* ofxUIValuePlotter.cpp in Sources */,
 				AE281BEBF3A00F1FC37F3DA0 /* ofxUIWaveform.cpp in Sources */,
@@ -1555,7 +1602,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				PRODUCT_NAME = ShapeifyDebug;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1640,7 +1687,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Shapeify;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1648,7 +1695,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Knockout_openCV" */ = {
+		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Shapeify" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B4E0A3A1720003C02F2 /* Debug */,
@@ -1657,7 +1704,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "Knockout_openCV" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "Shapeify" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,

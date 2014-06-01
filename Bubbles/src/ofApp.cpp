@@ -34,7 +34,7 @@ void ofApp::setup(){
     ofAddListener(imageManager.onLoaded, this, &ofApp::onImageLoaded );
     colorManager.setup();
     
-    bubbs.setup();
+    bubbles.setup();
     
     // colors
     vector<ofColor> hl = colorManager.getHighLowPair();
@@ -52,10 +52,10 @@ void ofApp::setup(){
     gui->addToggle("Color background", &bColorBg);
     gui->addToggle("Color bg with fg", &bBgFg);
     
-    gui->addSlider("zRange", -100, 0, &bubbs.zRange);
-    gui->addSlider("density", 0.01, 1.00, &bubbs.density);
-    gui->addSlider("Noise factor", 0.01, 1.00, &bubbs.noiseFactor);
-    gui->addSlider("Shape complexity", 0.01, 1.00, &bubbs.complexity);
+    gui->addSlider("zRange", -100, 0, &bubbles.zRange);
+    gui->addSlider("density", 0.01, 1.00, &bubbles.density);
+    gui->addSlider("Noise factor", 0.01, 1.00, &bubbles.noiseFactor);
+    gui->addSlider("Shape complexity", 0.01, 1.00, &bubbles.complexity);
     
     gui->addToggle("Texture logo", &bTexLogo);
     gui->addSlider("Logo Scale", .5, 10.00, &logo.scale);
@@ -80,7 +80,7 @@ void ofApp::toggleGuiVisible(){
 }
 
 void ofApp::onImageLoaded( ofImage & img ){
-    bubbs.burst();
+    bubbles.burst();
     bRandomizeColor = true;
 }
 
@@ -117,7 +117,7 @@ void ofApp::update(){
     
     if ( bClear ){
         bClear = false;
-        bubbs.clear();
+        bubbles.clear();
     }
     
     
@@ -135,7 +135,7 @@ void ofApp::draw(){
     if ( bSave ){
         name = "particles_" + ofGetTimestampString();
         screen.startSave( name + ".png", bg);
-        bubbs.resize(ofGetWidth() * 3.0, ofGetHeight() * 3.0);
+        bubbles.resize(ofGetWidth() * 3.0, ofGetHeight() * 3.0);
     }
     
     ofEnableDepthTest();
@@ -144,14 +144,14 @@ void ofApp::draw(){
     if ( bInd){
         toBind.bind();
     }
-    bubbs.draw();
+    bubbles.draw();
     if ( bInd ){
         toBind.unbind();
     }
     
     if ( bSave ){
         screen.endSave();
-        bubbs.resize(ofGetWidth(), ofGetHeight());
+        bubbles.resize(ofGetWidth(), ofGetHeight());
     }
     
     if ( bSave ){
@@ -181,7 +181,7 @@ void ofApp::mouseDragged(int x, int y, int button){}
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    bubbs.addParticle(x,y);
+    bubbles.addParticle(x,y);
 }
 
 //--------------------------------------------------------------

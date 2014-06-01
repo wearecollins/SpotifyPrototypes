@@ -7,8 +7,16 @@
 #include "ImageManager.h"
 
 #include "Logo.h"
+#include "Metaballs.h"
+#include "Bubbles.h"
 
-class ofApp : public ofBaseApp{
+enum DrawMode {
+    MODE_BUBBLES = 0,
+    MODE_META,
+    MODE_PHOTO
+};
+
+class ofApp : public ofBaseApp {
 
 	public:
 		void setup();
@@ -27,16 +35,44 @@ class ofApp : public ofBaseApp{
 		
         void randomizeColors();
     
-        vector<ThreadedContourFinder *> contourFinders;
+        // GUI
+        vector<ofxUICanvas *> guisAdvanced;
         vector<ofxUICanvas *> guis;
+        void toggleGuiVisible();
+        void toggleAdvVisible();
+        void saveGui();
     
-        vector<ofImage> imgs;
+        // managers
+        ColorManager    colorMgr;
+        ScreenManager   screen;
+        rc::KeyManager  keys;
+    
+        // images
+        void setupImage( ofImage & img );
         vector<ofImage> drawImg;
-        string toLoad;
-        int whichToLoad;
+        ImageManager    images;
+        ColorFilter     colorsProcessor;
+        vector<ofColor> colors;
+        void onImageLoaded( ofImage & img );
     
-        ColorManager colorMgr;
-        ScreenManager screen;
+        // layer 1: blobs
+        vector<ThreadedContourFinder *> contourFinders;
     
+        // layer 2: logo
         Logo logo;
+    
+        // layer 3
+        int mode;
+    
+        ofxCv::ContourFinder metaballProcessor;
+        Metaballs metaballs;
+        ofFbo render;
+        ofPixels pix;
+        ofTessellator tess;
+        ofMesh drawMesh;
+    
+        Bubbles bubbles;
+        void drawLayerOne();
+        void drawLayerTwo();
+        void drawLayerThree();
 };

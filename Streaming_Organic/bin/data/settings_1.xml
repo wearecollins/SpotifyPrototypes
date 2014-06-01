@@ -1,12 +1,12 @@
 <Widget>
     <Kind>25</Kind>
-    <Name>threshold_1</Name>
-    <Value>243.689514160</Value>
+    <Name>threshold_0</Name>
+    <Value>177.245986938</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
-    <Name>smoothing_1</Name>
-    <Value>28.790321350</Value>
+    <Name>smoothing_0</Name>
+    <Value>33.931453705</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
@@ -21,17 +21,17 @@
 <Widget>
     <Kind>25</Kind>
     <Name>contrast</Name>
-    <Value>1.608467698</Value>
+    <Value>0.848387063</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
     <Name>scale</Name>
-    <Value>1.000000000</Value>
+    <Value>1.548387051</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>invert</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -46,7 +46,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>map image</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -61,7 +61,7 @@
 <Widget>
     <Kind>25</Kind>
     <Name>Filter: gaussian (amount)</Name>
-    <Value>10.677418709</Value>
+    <Value>11.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -81,7 +81,7 @@
 <Widget>
     <Kind>25</Kind>
     <Name>Filter: dilate (amount)</Name>
-    <Value>1.000000000</Value>
+    <Value>3.000000000</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>

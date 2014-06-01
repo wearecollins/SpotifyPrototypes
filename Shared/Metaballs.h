@@ -19,7 +19,8 @@ public:
         numBalls = 20;
         color.set(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
         color.setSaturation(.5);
-        metaball.load("metaball");
+        metaball.load("shaders/metaball");
+        mesh.clear();
         mesh.addVertex(ofVec2f(0,0));
         mesh.addVertex(ofVec2f(ofGetWidth(),0));
         mesh.addVertex(ofVec2f(ofGetWidth(),ofGetHeight()));

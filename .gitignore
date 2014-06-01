@@ -4,3 +4,5 @@ DerivedData
 *.DS_Store
 *.xcuserdatad
 project.xcworkspace
+
+Streaming_Organic/bin/data/*.png

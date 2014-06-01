@@ -3,6 +3,7 @@
 bool bRandomize = false;
 bool bAnimating = false;
 ofPixels pix;
+ofTessellator tess;
 
 string loadme = "";
 ofTessellator tess;

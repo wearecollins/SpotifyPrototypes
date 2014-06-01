@@ -41,6 +41,6 @@ class ofApp : public ofBaseApp{
         // gui
         ofxUICanvas * gui;
     
-        Bubbles bubbs;
+        Bubbles bubbles;
         void onImageLoaded( ofImage & img );
 };

@@ -149,7 +149,7 @@ public:
                             ofPoint center = smoothed.getCentroid2D();
                             for ( auto & p : smoothed.getVertices() ){
                                 ofVec2f dir = p - center;
-                                p += dir * scale;
+                                p += dir * (scale-1.0);
                             }
                             smoothed.flagHasChanged();
                         }

@@ -128,13 +128,16 @@ public:
     
     void burst(){
         clear();
-        int num = ofRandom(30,100);
+        int num = ofRandom(50,200);
         ofVec2f pcenter = particles.getWorldBox();
         pcenter.x /= 2.0;
         pcenter.y /= 2.0;
         for ( int i=0; i<num; i++){
-            addParticle( ofRandom(pcenter.x - 50, pcenter.x + 50),
-                         ofRandom(pcenter.y - 50, pcenter.y + 50) );
+            SParticle * p = addParticle( ofRandom(pcenter.x - 300, pcenter.x + 300),
+                         ofRandom(pcenter.y - 300, pcenter.y + 300) );
+            if ( i > num * .75){
+                p->radius *= .5;
+            }
         }
     }
     
@@ -150,14 +153,16 @@ public:
         SParticle * p = new SParticle(x,y);
         p->z = ofRandom(10,2);
         int ran = ofRandom(100);
-        p->radius = ran > 90 ? ofRandom(10,300) : ofRandom(3,50);
-        p->mass = ran < 90 ? p->radius : p->radius * .25;
+        p->radius = ran > 98 ? ofRandom(10,200) : ofRandom(2,30);
+        p->mass = ran < 98 ? p->radius : p->radius * .25;
         p->damping = .9;
         particles.addParticle(p);
-        if ( ofGetKeyPressed( OF_KEY_SHIFT) ){
+        if ( ofGetKeyPressed( OF_KEY_SHIFT) || ofRandom(80) > 70  ){
             p->bLocked = true;
             p->bTransparent = true;
-            p->radius = 100;
+            p->radius = ofRandom(30,80);
+            p->x += ofRandom(-p->radius, p->radius);
+            p->y += ofRandom(-p->radius, p->radius);
         } else {
             p->res = ofRandom(3,50);
         }

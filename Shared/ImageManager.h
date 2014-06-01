@@ -25,6 +25,7 @@ public:
     void update( ofEventArgs & e ){
         if ( toLoad.size() > 0 ){
             for ( auto & s : toLoad ){
+                images.clear();
                 images.insert(images.begin(), ofImage());
                 images.front().loadImage(s);
                 ofNotifyEvent(onLoaded, images.front(), this);

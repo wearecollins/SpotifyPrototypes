@@ -15,10 +15,9 @@ class ScreenManager {
 public:
     
     void setup(){
+        saveScale = 1.0;
         ofAddListener(ofEvents().keyPressed, this, &ScreenManager::keyPressed);
         mode = 0;
-        
-        _renderCollection = ofPtr<ofRendererCollection>(new ofRendererCollection);
     }
     
     void keyPressed( ofKeyEventArgs & k ){
@@ -33,8 +32,8 @@ public:
         switch ( k.key ){
             // 16x9
             case '1':
-                w = maxH;
-                h = maxH * 9.0/16.0;
+                w = maxW;
+                h = maxW * 9.0/16.0;
                 bChange = true;
                 mode = 1;
                 break;
@@ -42,16 +41,16 @@ public:
             // 4x3
             case '2':
                 //scale = fmin( 4.0/3.0 * maxW, 3.0/4.0 * maxH );
-                w = maxH;
-                h = maxH * 3.0/4.0;
+                w = maxW;
+                h = maxW * 3.0/4.0;
                 bChange = true;
                 mode = 2;
                 break;
             
             // billboard
             case '3':
-                w = maxH;
-                h = maxH * 37./87.0;
+                w = maxW;
+                h = maxW * 37./87.0;
                 bChange = true;
                 mode = 3;
                 break;
@@ -77,11 +76,11 @@ public:
         currentFile = file;
         if ( output.isAllocated() ){
         }
-        output.allocate(ofGetWidth() * 3.0, ofGetHeight() * 3.0, GL_RGBA, 8);
+        output.allocate(ofGetWidth() * saveScale, ofGetHeight() * saveScale, GL_RGBA, 8);
         output.begin();
         ofClear(background.r, background.g, background.b, 0.0);
         ofPushMatrix();
-        ofScale(3.0, 3.0, 3.0);
+        ofScale(saveScale, saveScale, saveScale);
     }
     
     void endSave(){
@@ -92,32 +91,43 @@ public:
         ofSaveImage(outpix, currentFile);
     }
     
+    float saveScale;
+    
 protected:
     ofFbo output;
     string currentFile;
-    ofPtr<ofBaseRenderer> _origRenderer;
-	ofPtr<ofRendererCollection> _renderCollection;
-    ofPtr<ofCairoRenderer> _pdfRenderer;
     
 };
 
 class ColorManager {
 public:
     
-    void setup(){
+    void setup( string path = "../../../Shared/colors.xml"){
         ofxXmlSettings xml;
-        if ( xml.load(ofToDataPath("../../../Shared/colors.xml", true)) ){
+        active[0] = active[1] = tempActive = -1;
+        radius = 30;
+        int x = radius * 2;
+        int y = radius * 2;
+        
+        if ( xml.load(ofToDataPath(path, true)) ){
             xml.pushTag("settings");
             int sets = xml.getNumTags("set");
             for ( int i=0; i<sets; i++){
                 xml.pushTag("set", i);
                 int c = xml.getNumTags("color");
                 colors.push_back( vector<ofColor>() );
+                positions.push_back( vector<ofVec2f>() );
                 for ( int j=0; j<c; j++){
                     xml.pushTag("color", j);
                     colors[i].push_back(ofColor( xml.getValue("r", 0.0),  xml.getValue("g", 0.0),  xml.getValue("b", 0.0) ));
+                    positions[i].push_back(ofVec2f(x,y));
+                    
+                    x += radius * 2;
+                    
                     xml.popTag();
                 }
+                y += radius * 2;
+                x = radius * 2;
                 xml.popTag();
             }
             xml.popTag();
@@ -158,7 +168,68 @@ public:
         return ret;
     }
     
+    void draw(){
+        ofPushStyle();
+        for ( int i=0; i<positions.size(); i++ ){
+            for ( int j=0; j<positions[i].size(); j++ ){
+                ofSetColor( colors[i][j] );
+                if ( (j + i * 10) == active[0] ||
+                     (j + i * 10) == active[1] ||
+                     (j + i * 10) == tempActive ){
+                    ofFill();
+                } else {
+                    ofNoFill();
+                }
+                ofCircle(positions[i][j], radius * .8);
+                
+                if ( (j + i * 10) == active[0] ){
+                    ofDrawBitmapStringHighlight("B", positions[i][j] + ofVec2f(-5,0));
+                } else if ((j + i * 10) == active[1]){
+                    ofDrawBitmapStringHighlight("W", positions[i][j] + ofVec2f(-5,0));
+                }
+            }
+        }
+        ofPopStyle();
+    }
+    
+    ofColor checkHit( int x, int y, bool bPressed, bool bForeground ){
+        ofVec2f m(x,y);
+        for ( int i=0; i<positions.size(); i++ ){
+            for ( int j=0; j<positions[i].size(); j++ ){
+                if ( abs(positions[i][j].distance(m)) < radius  ){
+                    if ( bPressed ){
+                        if ( bForeground ) active[1] = (j + i * 10);
+                        else active[0] = (j + i * 10);
+                    } else {
+                        tempActive = (j + i * 10);
+                    }
+                    return colors[i][j];
+                }
+            }
+        }
+        tempActive = -1;
+    }
+    
+    vector<ofColor> getActive(){
+        vector<ofColor> ret;
+        for ( int i=0; i<colors.size(); i++ ){
+            for ( int j=0; j<colors[i].size(); j++ ){
+                if ( (j + i * 10) == active[0] || (j + i * 10) == active[1] ){
+                    ret.push_back(colors[i][j]);
+                }
+            }
+        }
+        return ret;
+    }
+    
     vector<vector<ofColor> > colors;
+    
+protected:
+    
+    int radius;
+    vector<vector<ofVec2f> > positions;
+    int active[2];
+    int tempActive;
 };
 
 class ImageFilter : protected ofThread {
@@ -229,7 +300,6 @@ public:
         } else {
             addColorPair(a, b);
         }
-        cout << colorPairs.size() << endl;
     }
     
     vector<ofColor> * getColorPair( int index ){

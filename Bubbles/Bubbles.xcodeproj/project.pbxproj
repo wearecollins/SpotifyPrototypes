@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01280EA51936320800734531 /* ImageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01280EA01936320800734531 /* ImageFilter.cpp */; };
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
 		10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A810DF70319A10353588F5DB /* Tracker.cpp */; };
@@ -141,7 +140,6 @@
 		011E372AEA4DFBC1A32C2851 /* all_indices.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = all_indices.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/all_indices.h; sourceTree = SOURCE_ROOT; };
 		01280E9E1936320800734531 /* CvFilters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CvFilters.h; sourceTree = "<group>"; };
 		01280E9F1936320800734531 /* FMODProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMODProcessor.h; sourceTree = "<group>"; };
-		01280EA01936320800734531 /* ImageFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageFilter.cpp; sourceTree = "<group>"; };
 		01280EA11936320800734531 /* ImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFilter.h; sourceTree = "<group>"; };
 		01280EA21936320800734531 /* ImageTriangulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageTriangulator.h; sourceTree = "<group>"; };
 		01280EA31936320800734531 /* RandomTriangulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomTriangulator.h; sourceTree = "<group>"; };
@@ -454,7 +452,6 @@
 			children = (
 				01280E9E1936320800734531 /* CvFilters.h */,
 				01280E9F1936320800734531 /* FMODProcessor.h */,
-				01280EA01936320800734531 /* ImageFilter.cpp */,
 				01280EA11936320800734531 /* ImageFilter.h */,
 				01280EAB193635FA00734531 /* ImageManager.h */,
 				01280EA21936320800734531 /* ImageTriangulator.h */,
@@ -1274,7 +1271,6 @@
 				10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */,
 				A6668C5B1272D7FCD5B5A16F /* Utilities.cpp in Sources */,
 				DBCB84A37F9AECC254870D79 /* Wrappers.cpp in Sources */,
-				01280EA51936320800734531 /* ImageFilter.cpp in Sources */,
 				8D52AD690D644D834012AED6 /* ofxLabFlexParticle.cpp in Sources */,
 				A87D42EBDA7EA022EF6743FD /* ofxLabFlexParticleSystem.cpp in Sources */,
 				7BB318C05030DBEB53A57A92 /* ofxLabFlexQuad.cpp in Sources */,
