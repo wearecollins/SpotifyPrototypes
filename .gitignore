@@ -5,4 +5,5 @@ DerivedData
 *.xcuserdatad
 project.xcworkspace
 
-Streaming_Organic/bin/data/*.png
+*/bin/data/*.png
+*.zip
