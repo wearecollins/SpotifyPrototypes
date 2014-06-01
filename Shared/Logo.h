@@ -24,14 +24,11 @@ public:
         
         for ( int i=0; i<logo.getNumPath(); i++ ){
             logoMeshes.push_back(ofMesh());
+            zpos.push_back(0.0);
             logo.getPathAt(i).setPolyWindingMode(OF_POLY_WINDING_ODD);
             vector<ofPolyline> p = logo.getPathAt(i).getOutline();
             
             tess.tessellateToMesh(p, OF_POLY_WINDING_ODD, logoMeshes.back());
-            
-            for ( auto & v : logoMeshes.back().getVertices() ){
-                v.z = bFront ? 5 : -5;
-            }
             
             for ( auto & i : logoMeshes.back().getIndices() ){
                 auto v = logoMeshes.back().getVertex(i);
@@ -54,6 +51,8 @@ public:
             ofEnableDepthTest();
             drawscale *= .8;
         }
+        int i =0;
+        
         for ( auto & m : logoMeshes ){
             ofVec2f center(ofGetWidth()/2.0, ofGetHeight()/2.0);
             center += ofVec2f(-width/2.0 * drawscale, -height/2.0 * drawscale);
@@ -66,10 +65,11 @@ public:
             
             ofPushMatrix();
             rc::ofTranslateCenter();
-            ofTranslate(-width/2.0 * drawscale, -height/2.0 * drawscale);
+            ofTranslate(-width/2.0 * drawscale, -height/2.0 * drawscale, zpos[i]);
             ofScale(drawscale, drawscale);
             m.draw();
             ofPopMatrix();
+            i++;
         }
         ofPopMatrix();
     }
@@ -78,7 +78,6 @@ public:
         for ( auto & m : logoMeshes ){
             rc::ofSetMeshColor(m, color);
         }
-        circleColor.set(color);
     }
     
     void setColors( ofColor colorA, ofColor colorB ){
@@ -86,7 +85,6 @@ public:
             rc::ofSetMeshGradient(m,    ofFloatColor(colorA.r/255.0f, colorA.g/255.0f, colorA.b/255.0f),
                                   ofFloatColor(colorB.r/255.0f, colorB.g/255.0f, colorB.b/255.0f));
         }
-        circleColor.set(colorA);
     }
     
     void save(){
@@ -96,11 +94,12 @@ public:
     
     float   scale;
     bool    drawCircle;
+    vector<float>  zpos;
+    ofColor circleColor;
     
 protected:
     
     vector<ofMesh>  logoMeshes;
     ofxSVG logo;
     ofTessellator    tess;
-    ofColor         circleColor;
 };

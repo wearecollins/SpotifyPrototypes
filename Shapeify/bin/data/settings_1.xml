@@ -1,12 +1,12 @@
 <Widget>
     <Kind>25</Kind>
     <Name>threshold_0</Name>
-    <Value>177.245986938</Value>
+    <Value>25.085113525</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
     <Name>smoothing_0</Name>
-    <Value>33.931453705</Value>
+    <Value>12.338708878</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
@@ -21,12 +21,12 @@
 <Widget>
     <Kind>25</Kind>
     <Name>contrast</Name>
-    <Value>0.848387063</Value>
+    <Value>1.479838729</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
     <Name>scale</Name>
-    <Value>1.548387051</Value>
+    <Value>1.032258034</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

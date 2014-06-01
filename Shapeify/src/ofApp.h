@@ -74,5 +74,5 @@ class ofApp : public ofBaseApp {
         Bubbles bubbles;
         void drawLayerOne();
         void drawLayerTwo();
-        void drawLayerThree();
+        void drawLayerThree( bool bRender=true);
 };

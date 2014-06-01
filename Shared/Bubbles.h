@@ -37,7 +37,7 @@ public:
             v.x += ofSignedNoise( (v.x + v.y) * .01 + ofGetElapsedTimeMillis() * .002) * (radius * noiseFactor);
             v.y += ofSignedNoise( (v.x + v.y) * .02 + ofGetElapsedTimeMillis() * .001) * (radius * noiseFactor);
             mesh.setVertex(i, v);
-            mesh.setTexCoord(i,v);
+            mesh.setTexCoord(i,v + texCoordShift);
         }
         
         ofPushMatrix();
@@ -54,6 +54,7 @@ public:
     float complexity;
     
     float noiseFactor;
+    ofVec2f texCoordShift;
     
 protected:
     ofVec3f pos;
@@ -112,6 +113,7 @@ public:
         {
             ((SParticle*) it->second)->noiseFactor = noiseFactor;
             ((SParticle*) it->second)->complexity = complexity;
+            ((SParticle*) it->second)->texCoordShift = texCoordShift;
             
             it->second->attract(center);
             for( it2 = particles.getParticles()->begin(); it2 != particles.getParticles()->end(); ++it2 )
@@ -174,6 +176,7 @@ public:
     float density, lastdensity;
     float noiseFactor;
     float complexity;
+    ofVec2f texCoordShift;
     
 protected:
     

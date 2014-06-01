@@ -7,3 +7,4 @@ project.xcworkspace
 
 */bin/data/*.png
 *.zip
+Shapeify/bin/data/2014-*

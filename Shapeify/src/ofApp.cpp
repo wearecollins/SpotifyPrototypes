@@ -2,6 +2,7 @@
 
 int which       = 0;
 int whichLogo   = 0;
+int whichLogoCircle = 0;
 float minArea   = 0;
 float maxArea   = 1920 * 1080;
 
@@ -24,6 +25,9 @@ float contrast = 1.0;
 float lastContrast = -1;
 
 float separation = 500;
+ofVec2f texCoordShift;
+
+ofFbo imageFBO;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -71,7 +75,9 @@ void ofApp::setup(){
             y += ofGetHeight()/4;
         }
     }
-    
+
+    logo.setup();
+    screen.setup();
     colorMgr.setup();
     randomizeColors();
     
@@ -90,14 +96,29 @@ void ofApp::setup(){
     guiAdvanced->addSlider("density", 0.01, 1.00, &bubbles.density);
     guiAdvanced->addSlider("Noise factor", 0.01, 1.00, &bubbles.noiseFactor);
     guiAdvanced->addSlider("Shape complexity", 0.01, 1.00, &bubbles.complexity);
+    guiAdvanced->addSlider("texCoordShift.x", -100.0, 100.0, &bubbles.texCoordShift.x);
+    guiAdvanced->addSlider("texCoordShift.y", -100.0, 100.0, &bubbles.texCoordShift.y);
     
     guiAdvanced->addSpacer();
     guiAdvanced->addLabel("METABALLS");
     guiAdvanced->addSlider("separation", 0.0, 500, &separation);
     guiAdvanced->addSlider("density", 0.01, 1.00, &bubbles.density);
+    guiAdvanced->addSlider("texCoordShift.x", -100.0, 100.0, &texCoordShift.x);
+    guiAdvanced->addSlider("texCoordShift.y", -100.0, 100.0, &texCoordShift.y);
     
     guiAdvanced->toggleVisible();
     guisAdvanced.push_back(guiAdvanced);
+    
+    x += ofGetWidth()/4;
+    ofxUICanvas * guiAdvanced2 = new ofxUICanvas(x,y, ofGetWidth()/4, ofGetHeight() * .75);
+    guiAdvanced2->addSpacer();
+    guiAdvanced2->addLabel("LOGO");
+    guiAdvanced2->addSlider("top.z", -10.0, 10.0, &logo.zpos[1]);
+    guiAdvanced2->addSlider("middle.z", -10.0, 10.0, &logo.zpos[2]);
+    guiAdvanced2->addSlider("bottom.z", -10.0, 10.0, &logo.zpos[0]);
+    
+    guiAdvanced2->toggleVisible();
+    guisAdvanced.push_back(guiAdvanced2);
     
     ofxUICanvas * gui = new ofxUICanvas(0,0, ofGetWidth()/4, ofGetHeight()/2);
     gui->addWidgetDown(new ofxUILabel("SETTINGS", OFX_UI_FONT_LARGE));
@@ -107,8 +128,9 @@ void ofApp::setup(){
     gui->addToggle("Logo Gradient", &bUseGrad);
     
     gui->addToggle("Color Background", &bColorBg);
-    gui->addIntSlider("Which BG color", 0, 2, &which);
-    gui->addIntSlider("Which Logo color", 0, 2, &whichLogo);
+    gui->addIntSlider("Which BG color", 0, 1, &which);
+    gui->addIntSlider("Which Logo color", 0, 1, &whichLogo);
+    gui->addIntSlider("Which Logo container color", 0, 1, &whichLogoCircle);
     gui->addIntSlider("Draw Mode", 0, MODE_PHOTO, &mode);
     guiAdvanced->addSpacer();
     gui->addToggle("Save", &bSave);
@@ -131,15 +153,12 @@ void ofApp::setup(){
     images.setup();
     ofAddListener(images.onLoaded, this, &ofApp::onImageLoaded);
     
-    // LOGO
-    logo.setup();
-    screen.setup();
-    
     // BUBBLES
     bubbles.setup();
     
     // METABALLS
     render.allocate(ofGetWidth(), ofGetHeight());
+    imageFBO.allocate(ofGetWidth(), ofGetHeight());
     metaballProcessor.setMinAreaRadius(20);
     metaballs.setup();
     metaballs.color.set(1.0);
@@ -160,8 +179,8 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::randomizeColors(){
     colors.clear();
-    colors = colorMgr.getHighLowTriplet();
-    colorsProcessor.setColorPair(0, colors[2], colors[0]);
+    colors = colorMgr.getHighLowPair();
+    colorsProcessor.setColorPair(0, colors[1], colors[0]);
     bubbles.burst();
     lastContrast = -1;
     
@@ -186,7 +205,7 @@ void ofApp::update(){
     if ( screen.mode == 3){
         logo.scale = (ofGetWidth() * .7) / logo.width;
     } else if ( screen.mode == 4 ){
-        logo.scale = (ofGetWidth() * 1.5) / logo.width;
+        logo.scale = (ofGetWidth() * 4.5) / logo.width;
     } else {
         logo.scale = (ofGetWidth() * .8) / logo.width;
     }
@@ -216,20 +235,26 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::setupImage( ofImage & img ){
+
     float w, h;
     float rw = (float) ofGetWidth()/img.width;
     float rh = (float) ofGetHeight()/img.height;
-    if ( rw > rh ){
-        w = ofGetWidth() * .8;
-        h = img.height * w/img.width;
-    } else {
-        h = ofGetHeight() * .8;
+//    if ( rw > rh ){
+//        w = ofGetWidth();
+//        h = img.height * w/img.width;
+//    } else {
+        h = ofGetHeight();
         w = img.width * h/img.height;
-    }
+//    }
     img.resize(w, h);
     
-    // crop
-    img.crop((w - ofGetWidth())/2.0, (h-ofGetHeight())/2.0, ofGetWidth(), ofGetHeight());
+    imageFBO.begin();
+    ofClear(0,0);
+    img.draw(ofGetWidth()/2.0-w/2.0, ofGetHeight()/2.0 - h/2.0);
+    imageFBO.end();
+    static ofPixels fboReadPixels;
+    imageFBO.readToPixels(fboReadPixels);
+    img.setFromPixels(fboReadPixels);
 }
 
 //--------------------------------------------------------------
@@ -243,6 +268,7 @@ void ofApp::draw(){
     } else {
         logo.setColor(colors[whichLogo]);
     }
+    logo.circleColor = colors[whichLogoCircle];
     
     ofColor bg;
     if ( bColorBg ) bg.set(colors[which]);
@@ -250,7 +276,10 @@ void ofApp::draw(){
     
     string name;
     if ( bSave ){
-        name = "particles_" + ofGetTimestampString();
+        string directory = ofGetTimestampString();
+        ofDirectory dir(directory);
+        dir.create();
+        name = directory + "/particles_" + ofGetTimestampString();
         screen.startSave( name + "_bg.png", bg);
         bubbles.resize(ofGetWidth() * screen.saveScale, ofGetHeight() * screen.saveScale);
     }
@@ -307,7 +336,10 @@ void ofApp::draw(){
     if ( bSave ){
         screen.startSave( name + "_comp.png", bg);
         bubbles.resize(ofGetWidth() * screen.saveScale, ofGetHeight() * screen.saveScale);
-        
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glEnable(GL_BLEND);
+        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+        ofClear(bg);
         if ( bColorBg ){
             ofBackground(bg);
         } else {
@@ -315,8 +347,9 @@ void ofApp::draw(){
         }
         drawLayerOne();
         drawLayerTwo();
-        drawLayerThree();
-        
+        drawLayerThree(false);
+//        glDisable(GL_BLEND);
+        glPopAttrib();
         screen.endSave();
         bubbles.resize(ofGetWidth(), ofGetHeight());
     }
@@ -372,7 +405,7 @@ void ofApp::drawLayerTwo(){
 }
 
 //--------------------------------------------------------------
-void ofApp::drawLayerThree(){
+void ofApp::drawLayerThree( bool bRender ){
     bool bInd = drawImg.size() > 0 && drawImg[0].isAllocated();
     
     if ( bInd && mode == MODE_BUBBLES){
@@ -390,13 +423,15 @@ void ofApp::drawLayerThree(){
 //            metaballs.center.set(ofGetWidth() * .5, ofGetHeight() * .5);
 //        }
         metaballs.center.set(ofGetWidth() * .5, ofGetHeight() * .5);
-    
-        render.begin();
-        ofClear(0,0);
-        metaballs.draw();
-        render.end();
-        render.readToPixels(pix);
-        metaballProcessor.findContours(pix);
+        drawMesh.clear();
+        if ( bRender ){
+            render.begin();
+            ofClear(0,0);
+            metaballs.draw();
+            render.end();
+            render.readToPixels(pix);
+            metaballProcessor.findContours(pix);
+        }
         
         static ofPath p;
         ofSetColor(255);
@@ -407,10 +442,10 @@ void ofApp::drawLayerThree(){
             ofPolyline pl = metaballProcessor.getPolyline(i).getResampledByCount( cnt );
             tess.tessellateToMesh(pl, OF_POLY_WINDING_ODD, drawMesh);
             for ( auto & vec : drawMesh.getVertices() ){
-                drawMesh.addTexCoord(vec);
+                drawMesh.addTexCoord(vec + texCoordShift);
                 if ( bInd ) drawMesh.addColor( ofFloatColor( metaballs.color.r, metaballs.color.g, metaballs.color.b) );
                 else drawMesh.addColor( ofFloatColor( 1.0 ) );
-                vec.z = -3 + 0;
+                vec.z = -5 + 0;
             }
             if ( bInd ){
                 drawImg[0].bind();
@@ -483,6 +518,7 @@ void ofApp::windowResized(int w, int h){
     bubbles.resize(w,h);
     randomizeColors();
     render.allocate(ofGetWidth(), ofGetHeight());
+    imageFBO.allocate(ofGetWidth(), ofGetHeight());
 }
 void ofApp::gotMessage(ofMessage msg){}
 void ofApp::dragEvent(ofDragInfo dragInfo){}
