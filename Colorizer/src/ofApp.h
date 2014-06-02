@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ImageFilter.h"
 #include "ImageManager.h"
-#include "ofxUI.h"
+#include "Gui.h"
 #include "ofxCv.h"
 
 class ofApp : public ofBaseApp{
@@ -18,12 +18,17 @@ class ofApp : public ofBaseApp{
 		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
+        void windowResized( int w, int h );
 		
         ImageManager manager;
         ColorFilter  filter;
-        ColorManager colorManager;
     
-        ofxUICanvas * gui;
+//        ofxUICanvas * gui;
+    
+        collins::Gui    gui;
+        collins::Button saveButton;
+        void saveImage( bool & b );
     
         void onNewImage( ofImage & img );
+        void onFileLoaded( string & img );
 };

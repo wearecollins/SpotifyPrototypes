@@ -9,25 +9,30 @@ float contrast    = 1.0;
 float lastContrast    = 1.0;
 ofColor c, d;
 
+ofTrueTypeFont fontMedium;
+ofImage logo;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
+    ofSetDataPathRoot("./");
+    ofSetVerticalSync(true);
     manager.setup();
-    colorManager.setup("colors.xml");
     ofAddListener(manager.onLoaded, this, &ofApp::onNewImage);
-    ofBackground(255);
+    ofAddListener(manager.onLoadedFile, this, &ofApp::onFileLoaded);
+    ofAddListener(saveButton.onPressed, this, &ofApp::saveImage);
+    ofBackground(100);
     
-    string draw = "Drag an image to the window to process.";
-    string draw2 = "Click to set WHITE. Hold SHIFT to set Black.";
-//    draw += "\nPress 's' to save.";
-    gui = new ofxUICanvas( ofGetWidth() - 200, 0, 200, 200);
-    gui->addTextArea("text", draw);
-    gui->addSpacer();
-    gui->addTextArea("text2", draw2);
-    gui->addSpacer();
-    gui->addSlider("Contrast", 1.0, 5.0, &contrast);
+    gui.setup("assets/fonts/CircularStd-Book.ttf");
+    gui.x = floor(ofGetWidth() - gui.getWidth()-20);
+    gui.y = 20;
+    gui.attachFloat("contrast", &contrast);
     
-    gui->addToggle("Open after save", &bOpenAferSave);
-    gui->addToggle("Save", &bSaving);
+    saveButton.setup("assets/fonts/CircularStd-Book.ttf");
+    saveButton.x = ofGetWidth() - saveButton.width-20;
+    saveButton.y = ofGetHeight() - saveButton.height-20;
+    
+    fontMedium.loadFont("assets/fonts/CircularStd-Medium.ttf", 30);
+    logo.loadImage("assets/logo.png");
 }
 
 //--------------------------------------------------------------
@@ -35,7 +40,7 @@ void ofApp::update(){
     if ( manager.size() == 0 ){
         return;
     }
-    vector<ofColor> colors = colorManager.getActive();
+    vector<ofColor> colors = gui.getActive();
     
     bool process = ((colors.size() == 2 && (c != colors[0] || d != colors[1])) || lastContrast != contrast);
     
@@ -60,7 +65,7 @@ void ofApp::update(){
     
     if ( bSaving ){
         string str = "image_"+ofGetTimestampString()+".png";
-        temp.saveImage(str);
+        temp.saveImage( "../../../" + str);
         bSaving = false;
         string cmd = "open "+ofToString(ofToDataPath(str, true));
         if (bOpenAferSave) system(cmd.c_str());
@@ -70,14 +75,22 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     if ( temp.isAllocated() ){
-        temp.draw(0,0);
+        temp.draw(ofGetWidth()/2.0 - temp.width/2.0, ofGetHeight()/2.0 - temp.height/2.0);
     } else if ( manager.size() > 0 ){
-        manager.getImage(0).draw(0,0);
+        manager.getImage(0).draw(ofGetWidth()/2.0 - manager.getImage(0).width/2.0, ofGetHeight()/2.0 - manager.getImage(0).height/2.0);
+    } else {
+        float w = fontMedium.stringWidth("Drag image here");
+        float h = fontMedium.stringHeight("Drag image here");
+        fontMedium.drawString("Drag image here", ofGetWidth()/2.0 - w/2.0, ofGetHeight()/2.0 - h/2.0 + fontMedium.getSize());
     }
-    
-    colorManager.draw();
+    ofSetColor(255);
+    logo.draw(20,20);
 }
 
+//--------------------------------------------------------------
+void ofApp::saveImage( bool & b ){
+    bSaving = true;
+}
 
 //--------------------------------------------------------------
 void ofApp::keyPressed( int k ){
@@ -87,7 +100,6 @@ void ofApp::keyPressed( int k ){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-    colorManager.checkHit(x, y, false, false);
 }
 
 //--------------------------------------------------------------
@@ -96,7 +108,6 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    colorManager.checkHit(x, y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
 }
 
 //--------------------------------------------------------------
@@ -105,8 +116,23 @@ void ofApp::mouseReleased(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
+void ofApp::windowResized( int w, int h ){
+    
+    gui.x = floor(ofGetWidth() - gui.getWidth()-20);
+    gui.y = 20;
+    
+    saveButton.x = ofGetWidth() - saveButton.width-20;
+    saveButton.y = ofGetHeight() - saveButton.height-20;
+}
+
+//--------------------------------------------------------------
 void ofApp::onNewImage( ofImage & img ){
     lastContrast = -1;
     c.set(255);
     d.set(255);
+}
+
+//--------------------------------------------------------------
+void ofApp::onFileLoaded( string & img ){
+    gui.setTitle(img);
 }

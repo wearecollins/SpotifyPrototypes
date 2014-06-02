@@ -29,6 +29,9 @@ public:
                 images.insert(images.begin(), ofImage());
                 images.front().loadImage(s);
                 ofNotifyEvent(onLoaded, images.front(), this);
+                ofFile f(s);
+                string ret = f.getFileName();
+                ofNotifyEvent(onLoadedFile, ret, this);
             }
             runFilters();
             toLoad.clear();
@@ -82,7 +85,8 @@ public:
         imagesFiltered[which] = img;
     }
     
-    ofEvent<ofImage> onLoaded;
+    ofEvent<ofImage>    onLoaded;
+    ofEvent<string>     onLoadedFile;
     
 protected:
     vector<string>  toLoad;
