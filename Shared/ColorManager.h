@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ofxXmlSettings.h"
+
 class ColorManager : public ofVec2f {
 public:
     
@@ -26,9 +28,11 @@ public:
                 int c = xml.getNumTags("color");
                 colors.push_back( vector<ofColor>() );
                 positions.push_back( vector<ofVec2f>() );
+                colorNames.push_back( vector<string>() );
                 for ( int j=0; j<c; j++){
                     xml.pushTag("color", j);
                     if ( xml.getValue("r", 0.0) >= 0.0 ){
+                        colorNames[i].push_back(xml.getValue("title", ""));
                         colors[i].push_back(ofColor( xml.getValue("r", 0.0),  xml.getValue("g", 0.0),  xml.getValue("b", 0.0) ));
                         positions[i].push_back(ofVec2f(x,y));
                     }
@@ -131,7 +135,34 @@ public:
         return ret;
     }
     
+    string getActiveName(){
+        string ret = "";
+        for ( int i=0; i<colorNames.size(); i++ ){
+            for ( int j=0; j<colorNames[i].size(); j++ ){
+                if ( (j + i * 10) == active ){
+                    ret = (colorNames[i][j]);
+                }
+            }
+        }
+        return ret;
+    }
+    
+    ofColor randomize(){
+        ofColor ret(0,0);
+        int ind = floor(ofRandom(colors.size()));
+        active = ind * 10 + floor(ofRandom(colors[ind].size()));
+        for ( int i=0; i<colors.size(); i++ ){
+            for ( int j=0; j<colors[i].size(); j++ ){
+                if ( (j + i * 10) == active ){
+                    ret.set(colors[i][j]);
+                }
+            }
+        }
+        return ret;
+    }
+    
     vector<vector<ofColor> > colors;
+    vector<vector<string> > colorNames;
     
 protected:
     

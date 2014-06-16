@@ -5,6 +5,8 @@
 #include "ofxUI.h"
 #include "ofAppGLFWWindow.h"
 #include "ImageManager.h"
+#include "ColorManager.h"
+#include "Gui.h"
 
 #include "Logo.h"
 #include "Metaballs.h"
@@ -42,6 +44,11 @@ class ofApp : public ofBaseApp {
         void toggleAdvVisible();
         void saveGui();
     
+        collins::Gui gui;
+        collins::Button saveButton, randomButton;
+        void onSave( bool & b );
+        void onRandom( bool & b );
+    
         // managers
         ColorManager    colorMgr;
         ScreenManager   screen;
@@ -54,6 +61,7 @@ class ofApp : public ofBaseApp {
         ColorFilter     colorsProcessor;
         vector<ofColor> colors;
         void onImageLoaded( ofImage & img );
+        void onFileLoaded( string & img );
     
         // layer 1: blobs
         vector<ThreadedContourFinder *> contourFinders;
@@ -61,18 +69,18 @@ class ofApp : public ofBaseApp {
         // layer 2: logo
         Logo logo;
     
-        // layer 3
-        int mode;
+        // layer 1/3
+        int mode,modeBG;
     
         ofxCv::ContourFinder metaballProcessor;
-        Metaballs metaballs;
+        Metaballs metaballs, metaballsBG;
         ofFbo render;
         ofPixels pix;
         ofTessellator tess;
         ofMesh drawMesh;
     
         Bubbles bubbles;
-        void drawLayerOne();
+        void drawLayerOne( bool bRender=true );
         void drawLayerTwo();
         void drawLayerThree( bool bRender=true);
 };

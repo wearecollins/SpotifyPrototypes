@@ -130,7 +130,7 @@ public:
     
     void burst(){
         clear();
-        int num = ofRandom(50,200);
+        int num = ofRandom(120,200);
         ofVec2f pcenter = particles.getWorldBox();
         pcenter.x /= 2.0;
         pcenter.y /= 2.0;
@@ -155,7 +155,7 @@ public:
         SParticle * p = new SParticle(x,y);
         p->z = ofRandom(10,2);
         int ran = ofRandom(100);
-        p->radius = ran > 98 ? ofRandom(10,200) : ofRandom(2,30);
+        p->radius = ran > 98 ? ofRandom(10,100) : ofRandom(2,30);
         p->mass = ran < 98 ? p->radius : p->radius * .25;
         p->damping = .9;
         particles.addParticle(p);

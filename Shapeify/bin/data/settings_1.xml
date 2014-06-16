@@ -1,90 +1,105 @@
 <Widget>
     <Kind>25</Kind>
-    <Name>threshold_0</Name>
-    <Value>25.085113525</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>smoothing_0</Name>
-    <Value>12.338708878</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>minArea</Name>
-    <Value>0.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>maxArea</Name>
-    <Value>786432.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>contrast</Name>
-    <Value>1.479838729</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>scale</Name>
-    <Value>1.032258034</Value>
+    <Name>Contrast</Name>
+    <Value>1.578947186</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>invert</Name>
+    <Name>Draw photo</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>warp image</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>snap to edge</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>map image</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>tint</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>Filter: gaussian</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>Filter: gaussian (amount)</Name>
-    <Value>11.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>Filter: laplacian</Name>
+    <Name>Rotate parts</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
-    <Name>Filter: laplacian (amount)</Name>
-    <Value>3.000000000</Value>
+    <Name>Rotate increment</Name>
+    <Value>2.999999762</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>Filter: dilate</Name>
+    <Name>Offset part</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>25</Kind>
-    <Name>Filter: dilate (amount)</Name>
-    <Value>3.000000000</Value>
+    <Name>Offset increment</Name>
+    <Value>10.000000000</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
-    <Name>windingMode</Name>
-    <Value>2</Value>
+    <Name>Num draw iterations</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>zRange</Name>
+    <Value>-5.000000954</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>density</Name>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Noise factor</Name>
+    <Value>0.010000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Shape complexity</Name>
+    <Value>1.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>texCoordShift.x</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>texCoordShift.y</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>separation</Name>
+    <Value>225.806442261</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>force limit</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>scale</Name>
+    <Value>49.596775055</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>separationBG</Name>
+    <Value>209.677413940</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>force limit BG</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>scale bg</Name>
+    <Value>32.258064270</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>texCoordShift.x</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>texCoordShift.y</Name>
+    <Value>0.000000000</Value>
 </Widget>

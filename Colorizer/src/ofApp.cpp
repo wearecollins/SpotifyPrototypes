@@ -32,6 +32,8 @@ void ofApp::setup(){
     saveButton.y = ofGetHeight() - saveButton.height-20;
     
     fontMedium.loadFont("assets/fonts/CircularStd-Medium.ttf", 30);
+    fontMedium.setLetterSpacing(.95);
+    fontMedium.setSpaceSize(.6);
     logo.loadImage("assets/logo.png");
 }
 
@@ -45,7 +47,10 @@ void ofApp::update(){
     bool process = ((colors.size() == 2 && (c != colors[0] || d != colors[1])) || lastContrast != contrast);
     
     if ( process ){
+        float scale = fmin( (float) ofGetWidth()/manager.getRawImage(0).width, (float) ofGetHeight()/manager.getRawImage(0).height );
+        manager.getImage(0).resize(manager.getRawImage(0).width * scale, manager.getRawImage(0).height * scale);
         temp.clone(manager.getImage(0));
+        cout << temp.width * scale << ":" << temp.height * scale << endl;
         static cv::Mat mat;
         static cv::Mat p;
         mat = ofxCv::toCv(temp);
@@ -64,11 +69,8 @@ void ofApp::update(){
     }
     
     if ( bSaving ){
-        string str = "image_"+ofGetTimestampString()+".png";
-        temp.saveImage( "../../../" + str);
+        saver.save(manager.getRawImage(0), filter, contrast);
         bSaving = false;
-        string cmd = "open "+ofToString(ofToDataPath(str, true));
-        if (bOpenAferSave) system(cmd.c_str());
     }
 }
 
@@ -84,7 +86,7 @@ void ofApp::draw(){
         fontMedium.drawString("Drag image here", ofGetWidth()/2.0 - w/2.0, ofGetHeight()/2.0 - h/2.0 + fontMedium.getSize());
     }
     ofSetColor(255);
-    logo.draw(20,20);
+    logo.draw(20,27);
 }
 
 //--------------------------------------------------------------
@@ -118,11 +120,11 @@ void ofApp::mouseReleased(int x, int y, int button){
 //--------------------------------------------------------------
 void ofApp::windowResized( int w, int h ){
     
-    gui.x = floor(ofGetWidth() - gui.getWidth()-20);
+    gui.x = fmax(20, floor(ofGetWidth() - gui.getWidth()-20));
     gui.y = 20;
     
-    saveButton.x = ofGetWidth() - saveButton.width-20;
-    saveButton.y = ofGetHeight() - saveButton.height-20;
+    saveButton.x = fmax(20, ofGetWidth() - saveButton.width-20);
+    saveButton.y = fmax(gui.y + gui.getHeight() + 20, ofGetHeight() - saveButton.height-20);
 }
 
 //--------------------------------------------------------------

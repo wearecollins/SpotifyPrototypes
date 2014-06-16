@@ -1,12 +1,12 @@
 /* Fragment shader */
 //#version 150
-#define NUM_BALLS 20
+#define NUM_BALLS 30
 #define BALL_SUB  10
 
 //out vec4 color_out;
 uniform vec3 balls[NUM_BALLS]; //.xy is position .z is radius
-uniform vec2 circles[NUM_BALLS * BALL_SUB]; //.xy is position .z is radius
 uniform vec4 color;
+uniform float iso;
 
 float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -34,7 +34,7 @@ void main()
 {
     bool outside;
     /* gl_FragCoord.xy is in screen space / fragment coordinates */
-    outside = energyField(gl_FragCoord.xy, 1.0, 40.0);
+    outside = energyField(gl_FragCoord.xy, 1.0, iso);
     if(outside == true)
         gl_FragColor = vec4(color.r, color.g, color.b, color.a);
     else

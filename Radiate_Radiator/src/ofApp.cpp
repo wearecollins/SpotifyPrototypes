@@ -14,7 +14,7 @@ ofVec2f center, lastCenter;
 void ofApp::setup(){
     ofSetCircleResolution(100);
     gui = new ofxUICanvas(0,0,ofGetWidth()/4.0, ofGetHeight());
-    gui->addIntSlider("num circles", 1, 100, &numCircles);
+    gui->addIntSlider("num circles", 1, 1000, &numCircles);
     gui->addIntSlider("num colors", 1, 100, &numColors);
     gui->addIntSlider("easing type", 0, 3, &easeType);
     gui->addSlider("start radius", 10, 10000, &startRadius);

@@ -1,85 +1,60 @@
 <Widget>
-    <Kind>25</Kind>
-    <Name>Contrast</Name>
-    <Value>1.649677515</Value>
+    <Kind>4</Kind>
+    <Name>top.z</Name>
+    <Value>-1.129032373</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>middle.z</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>bottom.z</Name>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>Draw photo</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>Rotate parts</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>Rotate increment</Name>
-    <Value>2.999999762</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>Offset part</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>25</Kind>
-    <Name>Offset increment</Name>
-    <Value>10.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>42</Kind>
-    <Name>Num draw iterations</Name>
+    <Name>Draw Logo</Name>
     <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>zRange</Name>
-    <Value>0.000000000</Value>
+    <Kind>2</Kind>
+    <Name>Draw Logo Container</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>density</Name>
-    <Value>1.000000000</Value>
+    <Kind>2</Kind>
+    <Name>Logo Gradient</Name>
+    <Value>0</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>Noise factor</Name>
-    <Value>0.010000000</Value>
+    <Kind>2</Kind>
+    <Name>Color Background</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>Shape complexity</Name>
-    <Value>1.000000000</Value>
+    <Kind>42</Kind>
+    <Name>Which BG color</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>texCoordShift.x</Name>
-    <Value>0.000000000</Value>
+    <Kind>42</Kind>
+    <Name>Which Logo color</Name>
+    <Value>0</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>texCoordShift.y</Name>
-    <Value>0.000000000</Value>
+    <Kind>42</Kind>
+    <Name>Which Logo container color</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>separation</Name>
-    <Value>348.790313721</Value>
+    <Kind>42</Kind>
+    <Name>Draw Mode</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>density</Name>
-    <Value>1.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>texCoordShift.x</Name>
-    <Value>0.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>texCoordShift.y</Name>
-    <Value>-10.483873367</Value>
+    <Kind>42</Kind>
+    <Name>Background Mode</Name>
+    <Value>1</Value>
 </Widget>

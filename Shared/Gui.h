@@ -8,9 +8,9 @@
 namespace collins {
     
 #define GUI_WIDTH 400
-#define GUI_HEIGHT 40
-#define GUI_FONT_SIZE 12
-#define GUI_PADDING 12
+#define GUI_HEIGHT 35
+#define GUI_FONT_SIZE 10
+#define GUI_PADDING 10
     
     class Gui : public ofVec2f {
     public:
@@ -22,8 +22,8 @@ namespace collins {
         rectWidth(GUI_WIDTH),
         padding(GUI_PADDING),
         title("(No Image)"),
-        color1("White"),
-        color2("Black"),
+        color1("Black"),
+        color2("White"),
         borderColor(255){
         }
         //--------------------------------------------------------------
@@ -78,15 +78,32 @@ namespace collins {
             y += rectHeight;
             
             // colors
+            color1 = colorManagerW.getActiveName() == "" ? "Black" : colorManagerW.getActiveName();
+            color2 = colorManagerB.getActiveName() == "" ? "White" : colorManagerB.getActiveName();
+            
             if ( !bMinimized ){
                 font.drawString( "a. "+color1, x + padding, y + font.getSize() + padding * 1.25);
                 font.drawString( "b. "+color2, x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
-                ofRect(0, y, rectWidth/2.0, 180);
-                ofRect(rectWidth/2.0, y, rectWidth/2.0, 180);
-                y += 180;
+                ofRect(0, y, rectWidth/2.0, rectHeight * 5.0);
+                ofRect(rectWidth/2.0, y, rectWidth/2.0, rectHeight * 5.0);
+                y += rectHeight * 5.0;
                 colorManagerB.draw();
                 colorManagerW.draw();
                 contrastRect.set(padding, y + rectHeight, rectWidth - padding * 2, rectHeight);
+                
+                // contrast
+                ofRect(x, y, rectWidth, rectHeight * 2.0);
+                font.drawString( "Contrast", x + padding, y + font.getSize() + padding * 1.25);
+                font.drawString( ofToString(*floatValues["contrast"], 1), x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
+                y += rectHeight;
+                
+                // draw line
+                ofLine(x + padding, y + padding, rectWidth - padding * 2, y + padding);
+                
+                float xMark = ofMap(*floatValues["contrast"], 1.0, 5.0, x + padding, rectWidth - padding * 2);
+                
+                ofLine(xMark, y + padding - 8, xMark, y + padding + 8);
+                y += rectHeight;
             } else {
                 font.drawString( "a. "+color1, x + padding, y + font.getSize() + padding * 1.25);
                 font.drawString( "b. "+color2, x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
@@ -94,21 +111,14 @@ namespace collins {
                 ofRect(rectWidth/2.0, y, rectWidth/2.0, rectHeight);
                 y += rectHeight;
                 contrastRect.set(padding, y + rectHeight, rectWidth - padding * 2, rectHeight);
+                
+                // contrast
+                ofRect(x, y, rectWidth, rectHeight);
+                font.drawString( "Contrast", x + padding, y + font.getSize() + padding * 1.25);
+                font.drawString( ofToString(*floatValues["contrast"], 1), x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
+                y += rectHeight;
             }
             
-            // contrast
-            ofRect(x, y, rectWidth, rectHeight * 2.0);
-            font.drawString( "Contrast", x + padding, y + font.getSize() + padding * 1.25);
-            font.drawString( ofToString(*floatValues["contrast"], 1), x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
-            y += rectHeight;
-            
-            // draw line
-            ofLine(x + padding, y + padding, rectWidth - padding * 2, y + padding);
-            
-            float xMark = ofMap(*floatValues["contrast"], 1.0, 5.0, x + padding, rectWidth - padding * 2);
-            
-            ofLine(xMark, y + padding - 8, xMark, y + padding + 8);
-            y += rectHeight;
             height = y;
             
             ofPopMatrix();
@@ -141,6 +151,17 @@ namespace collins {
         }
         
         //--------------------------------------------------------------
+        int getHeight(){
+            return height;
+        }
+        
+        //--------------------------------------------------------------
+        void randomize(){
+            colorManagerW.randomize();
+            colorManagerB.randomize();
+        }
+        
+        //--------------------------------------------------------------
         vector<ofColor> getActive(){
             static vector<ofColor> ret; ret.clear();
             if ( colorManagerW.getActive() == ofColor(0,0))
@@ -168,8 +189,8 @@ namespace collins {
         
         //--------------------------------------------------------------
         void mousePressed(ofMouseEventArgs & m){
-            colorManagerW.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
-            colorManagerB.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
+            if (!bMinimized) colorManagerW.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
+            if (!bMinimized) colorManagerB.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
             
             if ( contrastRect.inside(m.x-x, m.y-y)){
                 float fx = (m.x-x) - contrastRect.x;
@@ -210,7 +231,8 @@ namespace collins {
     class Button : public ofRectangle {
     public:
         
-        void setup( string fontLoc, int fontsize = GUI_FONT_SIZE ){
+        void setup( string fontLoc, string t = "Save", int fontsize = GUI_FONT_SIZE ){
+            text = t;
             bInvert = false;
             width = GUI_WIDTH / 2.0;
             height = GUI_HEIGHT;
@@ -224,12 +246,19 @@ namespace collins {
         //--------------------------------------------------------------
         void draw(ofEventArgs & e){
             ofPushStyle();
+            ofFill();
+            ofSetColor(150,100);
+            ofRect(*this);
+            
+            ofSetColor(255);
+            
             if ( !bInvert ) ofNoFill();
             else ofFill();
             ofSetLineWidth(2.0);
             ofRect(*this);
+            
             if ( bInvert ) ofSetColor(150.0);
-            font.drawString("Save", x+ GUI_PADDING, y + font.getSize() + GUI_PADDING );
+            font.drawString(text, x+ GUI_PADDING, y + font.getSize() + GUI_PADDING );
             ofPopStyle();
         }
         
@@ -261,6 +290,7 @@ namespace collins {
         ofEvent<bool> onPressed;
         
     protected:
+        string text;
         bool bInvert;
         ofTrueTypeFont font;
     };

@@ -15,7 +15,7 @@ class ScreenManager {
 public:
     
     void setup(){
-        saveScale = 1.0;
+        saveScale = 3.0;
         ofAddListener(ofEvents().keyPressed, this, &ScreenManager::keyPressed);
         mode = 0;
     }

@@ -13,10 +13,10 @@
 class Logo : public ofRectangle {
 public:
     
-    void setup(){
+    void setup( string file="../../../Shared/logo.svg"){
         scale = 1.0;
         drawCircle = false;
-        logo.load( ofToDataPath("../../../Shared/logo.svg", true) );
+        logo.load( ofToDataPath(file, true) );
         width = logo.getWidth();
         height = logo.getHeight();
         
@@ -37,24 +37,27 @@ public:
             
             if ( bFront ) bFront = !bFront;
         }
+        x = ofGetWidth()/2.0;
+        y = ofGetHeight()/2.0;
+        bDepthTest = true;
     }
     
     void draw(){
         float drawscale = scale;
         ofPushMatrix();
         if ( drawCircle ){
-            ofDisableDepthTest();
+            if ( bDepthTest ) ofDisableDepthTest();
             ofSetCircleResolution(100);
             ofSetColor(circleColor);
-            ofEllipse(ofGetWidth()/2.0,ofGetHeight()/2.0, (width * scale)/2.0, (width * scale)/2.0);
+            ofEllipse(x,y, (width * scale)/2.0, (width * scale)/2.0);
             ofSetColor(255);
-            ofEnableDepthTest();
-            drawscale *= .8;
+            if ( bDepthTest ) ofEnableDepthTest();
+            drawscale *= .6;
         }
         int i =0;
         
         for ( auto & m : logoMeshes ){
-            ofVec2f center(ofGetWidth()/2.0, ofGetHeight()/2.0);
+            ofVec2f center(x, y);
             center += ofVec2f(-width/2.0 * drawscale, -height/2.0 * drawscale);
             for ( auto & i : m.getIndices() ){
                 auto v = m.getVertex(i);
@@ -64,7 +67,8 @@ public:
             }
             
             ofPushMatrix();
-            rc::ofTranslateCenter();
+            //rc::ofTranslateCenter();
+            ofTranslate(x, y);
             ofTranslate(-width/2.0 * drawscale, -height/2.0 * drawscale, zpos[i]);
             ofScale(drawscale, drawscale);
             m.draw();
@@ -96,6 +100,7 @@ public:
     bool    drawCircle;
     vector<float>  zpos;
     ofColor circleColor;
+    bool    bDepthTest;
     
 protected:
     

@@ -4,6 +4,7 @@
 			<r>80</r>
 			<g>55</g>
 			<b>80</b>
+			<title>Aubergine</title>
 		</color>
 		<color>
 			<r>-1</r>
@@ -12,11 +13,13 @@
 			<r>140</r>
 			<g>20</g>
 			<b>45</b>
+			<title>Maroon</title>
 		</color>
 		<color>
 			<r>97</r>
 			<g>58</g>
 			<b>28</b>
+			<title>Chocolate Brown</title>
 		</color>
 		<color>
 			<r>-1</r>
@@ -28,16 +31,19 @@
 			<r>48</r>
 			<g>75</g>
 			<b>48</b>
+			<title>Forest Green</title>
 		</color>
 		<color>
 			<r>29</r>
 			<g>50</g>
 			<b>98</b>
+			<title>Midnight Blue</title>
 		</color>
 		<color>
 			<r>45</r>
 			<g>40</g>
 			<b>40</b>
+			<title>Black</title>
 		</color>
 	</set>
 	<set>
@@ -54,6 +60,7 @@
 			<r>143</r>
 			<g>84</g>
 			<b>59</b>
+			<title>Bole</title>
 		</color>
 		<color>
 			<r>-1</r>
@@ -62,16 +69,19 @@
 			<r>90</r>
 			<g>95</g>
 			<b>0</b>
+			<title>Olive</title>
 		</color>
 		<color>
 			<r>0</r>
 			<g>125</g>
 			<b>90</b>
+			<title>Emerald</title>
 		</color>
 		<color>
 			<r>45</r>
 			<g>71</g>
 			<b>186</b>
+			<title>Royal Blue</title>
 		</color>
 	</set>
 	<set>
@@ -79,6 +89,7 @@
 			<r>180</r>
 			<g>40</g>
 			<b>155</b>
+			<title>Violet</title>
 		</color>
 		<color>
 			<r>-1</r>
@@ -87,36 +98,43 @@
 			<r>255</r>
 			<g>65</g>
 			<b>35</b>
+			<title>Tangerine</title>
 		</color>
 		<color>
 			<r>197</r>
 			<g>130</g>
 			<b>85</b>
+			<title>Tan</title>
 		</color>
 		<color>
 			<r>250</r>
 			<g>155</g>
 			<b>35</b>
+			<title>Gold</title>
 		</color>
 		<color>
 			<r>106</r>
 			<g>133</g>
 			<b>95</b>
+			<title>Fern</title>
 		</color>
 		<color>
 			<r>75</r>
 			<g>145</g>
 			<b>125</b>
+			<title>Spearmint</title>
 		</color>
 		<color>
 			<r>78</r>
 			<g>161</g>
 			<b>246</b>
+			<title>Azure</title>
 		</color>
 		<color>
 			<r>128</r>
 			<g>123</g>
 			<b>123</b>
+			<title>Storm</title>
 		</color>
 	</set>
 	<set>
@@ -124,31 +142,37 @@
 			<r>180</r>
 			<g>155</g>
 			<b>200</b>
+			<title>Lavender</title>
 		</color>
 		<color>
 			<r>250</r>
 			<g>113</g>
 			<b>163</b>
+			<title>Salmon</title>
 		</color>
 		<color>
 			<r>255</r>
 			<g>100</g>
 			<b>45</b>
+			<title>Orange</title>
 		</color>
 		<color>
 			<r>198</r>
 			<g>156</g>
 			<b>154</b>
+			<title>Light Brown</title>
 		</color>
 		<color>
 			<r>255</r>
 			<g>208</g>
 			<b>99</b>
+			<title>Sunflower</title>
 		</color>
 		<color>
 			<r>170</r>
 			<g>190</g>
 			<b>145</b>
+			<title>Pistachio</title>
 		</color>
 		<color>
 			<r>-1</r>
@@ -157,11 +181,13 @@
 			<r>158</r>
 			<g>195</g>
 			<b>210</b>
+			<title>Blue Grey</title>
 		</color>
 		<color>
 			<r>195</r>
 			<g>195</g>
 			<b>198</b>
+			<title>Mid Grey</title>
 		</color>
 	</set>
 	<set>
@@ -172,6 +198,7 @@
 			<r>255</r>
 			<g>206</g>
 			<b>194</b>
+			<title>Pink</title>
 		</color>
 		<color>
 			<r>-1</r>
@@ -189,16 +216,19 @@
 			<r>200</r>
 			<g>245</g>
 			<b>190</b>
+			<title>Powder Green</title>
 		</color>
 		<color>
 			<r>160</r>
 			<g>245</g>
 			<b>230</b>
+			<title>Cyan</title>
 		</color>
 		<color>
 			<r>195</r>
 			<g>195</g>
 			<b>198</b>
+			<title>Light Grey</title>
 		</color>
 	</set>
 	<set>
@@ -209,6 +239,7 @@
 			<r>240</r>
 			<g>54</g>
 			<b>169</b>
+			<title>Fuchsia</title>
 		</color>
 		<color>
 			<r>-1</r>
@@ -217,26 +248,31 @@
 			<r>245</r>
 			<g>0</g>
 			<b>31</b>
+			<title>Bright Red</title>
 		</color>
 		<color>
 			<r>247</r>
 			<g>234</g>
 			<b>48</b>
+			<title>Factory Yellow</title>
 		</color>
 		<color>
 			<r>210</r>
 			<g>252</g>
 			<b>100</b>
+			<title>Citrine Green</title>
 		</color>
 		<color>
 			<r>24</r>
 			<g>240</g>
 			<b>138</b>
+			<title>Electric Seafoam</title>
 		</color>
 		<color>
 			<r>62</r>
 			<g>0</g>
 			<b>245</b>
+			<title>Klein Blue</title>
 		</color>
 	</set>
 </settings>

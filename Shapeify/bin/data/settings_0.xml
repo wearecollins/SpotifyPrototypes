@@ -1,45 +1,90 @@
 <Widget>
+    <Kind>25</Kind>
+    <Name>threshold_0</Name>
+    <Value>14.438550949</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>smoothing_0</Name>
+    <Value>38.044357300</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>minArea</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>maxArea</Name>
+    <Value>786432.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>contrast</Name>
+    <Value>2.427016258</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>scale</Name>
+    <Value>1.145161271</Value>
+</Widget>
+<Widget>
     <Kind>2</Kind>
-    <Name>Randomize Colors</Name>
+    <Name>invert</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>warp image</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>Draw Logo</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>Draw Logo Container</Name>
+    <Name>snap to edge</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>Logo Gradient</Name>
+    <Name>map image</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>tint</Name>
     <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>Color Background</Name>
-    <Value>1</Value>
+    <Name>Filter: gaussian</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>Filter: gaussian (amount)</Name>
+    <Value>5.717741966</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Filter: laplacian</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>Filter: laplacian (amount)</Name>
+    <Value>3.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Filter: dilate</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>25</Kind>
+    <Name>Filter: dilate (amount)</Name>
+    <Value>3.000000000</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
-    <Name>Which BG color</Name>
+    <Name>windingMode</Name>
     <Value>2</Value>
-</Widget>
-<Widget>
-    <Kind>42</Kind>
-    <Name>Which Logo color</Name>
-    <Value>2</Value>
-</Widget>
-<Widget>
-    <Kind>42</Kind>
-    <Name>Draw Mode</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>Save</Name>
-    <Value>0</Value>
 </Widget>
