@@ -16,6 +16,8 @@ ofColor c, d;
 ofTrueTypeFont fontMedium;
 ofImage logo;
 
+string filePath = "../../../";
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetWindowPosition(0, 0);
@@ -24,7 +26,10 @@ void ofApp::setup(){
         ofSetWindowShape(1024 * windowScale,768 * windowScale );
     }
     ofShowCursor();
+#ifdef TARGET_OSX
     ofSetDataPathRoot("./");
+#endif
+    
     ofSetVerticalSync(true);
     manager.setup();
     ofAddListener(manager.onLoaded, this, &ofApp::onNewImage);
@@ -90,14 +95,15 @@ void ofApp::update(){
     
     if ( bSaving ){
         saver.saveToolTip = false;
-        saver.save(manager.getRawImage(0), filter, contrast);
+        saver.save(manager.getRawImage(0), filter, contrast, filePath);
         bSaving = false;
     }
     if ( bSaveAs ){
         saver.saveToolTip = false;
         ofFileDialogResult folder = ofSystemLoadDialog("Choose destination", true);
         if (folder.bSuccess ){
-            saver.save(manager.getRawImage(0), filter, contrast, folder.getPath());
+            filePath = folder.getPath();
+            saver.save(manager.getRawImage(0), filter, contrast, filePath);
         }
         bSaveAs = false;
     }
