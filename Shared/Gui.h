@@ -11,6 +11,7 @@ namespace collins {
 #define GUI_HEIGHT 35
 #define GUI_FONT_SIZE 10
 #define GUI_PADDING 10
+#define CONTRAST_MAX 4.0
     
     class Gui : public ofVec2f {
     public:
@@ -18,6 +19,7 @@ namespace collins {
         //--------------------------------------------------------------
         Gui():
         bMinimized(false),
+        bMouseOver(false),
         rectHeight(GUI_HEIGHT),
         rectWidth(GUI_WIDTH),
         padding(GUI_PADDING),
@@ -51,11 +53,17 @@ namespace collins {
             height = 600;
             
             minRect.set(rectWidth-padding-(rectHeight-padding*2.0),padding, (rectHeight-padding*2.0), (rectHeight-padding*2.0));
+            
+            rectColor.set(180, 0);
         }
         
         //--------------------------------------------------------------
         void update( ofEventArgs & e ){
-            
+            if ( bMouseOver ){
+                rectColor.a = rectColor.a * .9 + 200 * .1;
+            } else {
+                rectColor.a = rectColor.a * .9;// + 0 * .1;
+            }
         }
         
         //--------------------------------------------------------------
@@ -64,7 +72,7 @@ namespace collins {
             ofPushStyle();
             
             ofTranslate(*this);
-            ofSetColor(150,100);
+            ofSetColor(rectColor);
             ofRect(0,0, rectWidth, height);
             ofNoFill();
             ofSetColor(borderColor);
@@ -88,8 +96,8 @@ namespace collins {
             color2 = colorManagerB.getActiveName() == "" ? "White" : colorManagerB.getActiveName();
             
             if ( !bMinimized ){
-                font.drawString( "a. "+color1, x + padding, y + font.getSize() + padding * 1.25);
-                font.drawString( "b. "+color2, x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
+                font.drawString( "[b] "+color1, x + padding, y + font.getSize() + padding * 1.25);
+                font.drawString( "[w] "+color2, x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
                 ofRect(0, y, rectWidth/2.0, rectHeight * 5.0);
                 ofRect(rectWidth/2.0, y, rectWidth/2.0, rectHeight * 5.0);
                 y += rectHeight * 5.0;
@@ -106,13 +114,13 @@ namespace collins {
                 // draw line
                 ofLine(x + padding, y + padding, rectWidth - padding * 2, y + padding);
                 
-                float xMark = ofMap(*floatValues["contrast"], 1.0, 5.0, x + padding, rectWidth - padding * 2);
+                float xMark = ofMap(*floatValues["contrast"], 1.0, CONTRAST_MAX, x + padding, rectWidth - padding * 2);
                 
                 ofLine(xMark, y + padding - 8, xMark, y + padding + 8);
                 y += rectHeight;
             } else {
-                font.drawString( "a. "+color1, x + padding, y + font.getSize() + padding * 1.25);
-                font.drawString( "b. "+color2, x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
+                font.drawString( "[b] "+color1, x + padding, y + font.getSize() + padding * 1.25);
+                font.drawString( "[w] "+color2, x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
                 ofRect(0, y, rectWidth/2.0, rectHeight);
                 ofRect(rectWidth/2.0, y, rectWidth/2.0, rectHeight);
                 y += rectHeight;
@@ -183,13 +191,20 @@ namespace collins {
         void mouseMoved(ofMouseEventArgs & m ){
             colorManagerW.checkHit(m.x - x, m.y - y, false, false);
             colorManagerB.checkHit(m.x - x, m.y - y, false, false);
+            
+            ofRectangle hitRect(x,y,rectWidth,height);
+            if ( hitRect.inside(m.x, m.y)){
+                bMouseOver = true;
+            } else {
+                bMouseOver = false;
+            }
         }
         
         //--------------------------------------------------------------
         void mouseDragged(ofMouseEventArgs & m){
             if ( contrastRect.inside(m.x-x, m.y-y)){
                 float fx = (m.x-x) - contrastRect.x;
-                *floatValues["contrast"] = ofMap(fx, 0, contrastRect.width, 1.0, 5.0, true);
+                *floatValues["contrast"] = ofMap(fx, 0, contrastRect.width, 1.0, CONTRAST_MAX, true);
             }
         }
         
@@ -200,7 +215,7 @@ namespace collins {
             
             if ( contrastRect.inside(m.x-x, m.y-y)){
                 float fx = (m.x-x) - contrastRect.x;
-                *floatValues["contrast"] = ofMap(fx, 0, contrastRect.width, 1.0, 5.0, true);
+                *floatValues["contrast"] = ofMap(fx, 0, contrastRect.width, 1.0, CONTRAST_MAX, true);
             } else if ( minRect.inside(m.x-x, m.y-y)){
                 bMinimized = !bMinimized;
             }
@@ -225,7 +240,7 @@ namespace collins {
         }
         
     protected:
-        bool                    bMinimized;
+        bool                    bMinimized, bMouseOver;
         ColorManager            colorManagerB, colorManagerW;
         
         // contrast stuff
@@ -234,6 +249,8 @@ namespace collins {
         ofTrueTypeFont font;
         std::map<string, ofColor *>  colors;
         std::map<string, float *>    floatValues;
+        
+        ofColor rectColor;
         
         // retina
         float scale;
@@ -250,6 +267,10 @@ namespace collins {
     class Button : public ofRectangle {
     public:
         
+        Button() : ofRectangle() {
+            enabled = true;
+        }
+        
         void setup( string fontLoc, string t = "Save", float scale = 1.0, int fontSize = GUI_FONT_SIZE ){
             text = t;
             bInvert = false;
@@ -265,6 +286,7 @@ namespace collins {
         
         //--------------------------------------------------------------
         void draw(ofEventArgs & e){
+            if ( !enabled ) return;
             ofPushStyle();
             ofFill();
             ofSetColor(150,100);
@@ -308,6 +330,8 @@ namespace collins {
         }
         
         ofEvent<bool> onPressed;
+        
+        bool enabled;
         
     protected:
         float padding;

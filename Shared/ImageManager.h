@@ -24,11 +24,7 @@ public:
     
     void update( ofEventArgs & e ){
         if ( toLoad.size() > 0 ){
-            
-            cout << toLoad.size() << endl;
-            
             for ( auto & s : toLoad ){
-                cout <<" FILE NAME " << s << endl;
                 if ( s != "" ){
                     images.clear();
                     images.insert(images.begin(), ofImage());
@@ -57,7 +53,7 @@ public:
     void onDrag( ofDragInfo & e ){
         
         for ( auto & s : e.files ){
-            cout <<" FILE NAME " << s << endl;
+//            cout <<" FILE NAME " << s << endl;
         }
         toLoad.swap(e.files);
     }

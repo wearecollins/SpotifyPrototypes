@@ -10,6 +10,8 @@
 
 #include "ofxXmlSettings.h"
 
+//#define CM_DRAW_OUTLINE
+
 class ColorManager : public ofVec2f {
 public:
     
@@ -90,8 +92,10 @@ public:
         ofFill();
         for ( int i=0; i<positions.size(); i++ ){
             for ( int j=0; j<positions[i].size(); j++ ){
+#ifdef CM_DRAW_OUTLINE
                 ofSetColor( 255 );
                 ofCircle(positions[i][j], radius * .85);
+#endif
                 ofSetColor( colors[i][j] );
                 ofCircle(positions[i][j], radius * .7);
                 

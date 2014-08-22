@@ -14,16 +14,22 @@ class ImageSaver : public ofThread {
 public:
     
     ImageSaver() :
-    saveToolTip(false){
+    saveToolTip(false),
+    directory("../../../"){
         
     }
     
-    void save( ofImage img, ColorFilter & _filter, float _contrast, bool bThread = true ){
+    void save( ofImage img, ColorFilter & _filter, float _contrast, string dir = "../../../", bool bThread = true ){
         img.setUseTexture(false);
         temp.setUseTexture(false);
         temp.clone(img);
         filter = &_filter;
         contrast = _contrast;
+        directory = dir;
+        if ( directory.substr(directory.size()-1, 1) != "/"){
+            directory += "/";
+        }
+        
         if ( bThread ) startThread();
         else process();
         img.setUseTexture(true);
@@ -49,10 +55,10 @@ public:
                     b.setColor(i, j, filter->getColorPair(0)->at(1));
                 }
             }
-            a.saveImage( "../../../" + str +"_color1" +".png" );
-            b.saveImage( "../../../" + str +"_color2" +".png" );
+            a.saveImage( directory + str +"_color1" +".png" );
+            b.saveImage( directory + str +"_color2" +".png" );
         }
-        temp.saveImage( "../../../" + str +".png");
+        temp.saveImage( directory + str +".png");
     }
     
     void threadedFunction(){
@@ -65,4 +71,5 @@ protected:
     ofImage temp;
     float contrast;
     ColorFilter * filter;
+    string directory;
 };
