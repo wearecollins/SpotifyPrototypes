@@ -44,6 +44,8 @@ namespace collins {
             padding *= scale;
             
             font.loadFont( fontLoc, fontSize * (scale == 1.0 ? 1.0 : scale * 1.1));
+            font.setLetterSpacing(.95);
+            font.setSpaceSize(.6);
             colorManagerW.setup("assets/colors.xml", scale);
             colorManagerB.setup("assets/colors.xml", scale);
             colorManagerW.x = 0;
@@ -278,6 +280,8 @@ namespace collins {
             height = GUI_HEIGHT * scale;
             padding = GUI_PADDING * scale;
             font.loadFont( fontLoc, fontSize * (scale == 1.0 ? 1.0 : scale * 1.1) );
+            font.setLetterSpacing(.95);
+            font.setSpaceSize(.6);
             ofAddListener(ofEvents().draw, this, &Button::draw);
             ofAddListener(ofEvents().mouseMoved, this, &Button::mouseMoved);
             ofAddListener(ofEvents().mousePressed, this, &Button::mousePressed);
