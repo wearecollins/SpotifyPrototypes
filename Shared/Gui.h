@@ -24,20 +24,26 @@ namespace collins {
         title("(No Image)"),
         color1("Black"),
         color2("White"),
-        borderColor(255){
+        borderColor(255),
+        scale(1.0){
         }
         //--------------------------------------------------------------
         
-        void setup( string fontLoc, int fontSize = GUI_FONT_SIZE ){
+        void setup( string fontLoc, float _scale = 1.0, int fontSize = GUI_FONT_SIZE ){
             ofAddListener(ofEvents().update, this, &Gui::update);
             ofAddListener(ofEvents().draw, this, &Gui::draw);
             ofAddListener(ofEvents().mouseMoved, this, &Gui::mouseMoved);
             ofAddListener(ofEvents().mouseDragged, this, &Gui::mouseDragged);
             ofAddListener(ofEvents().mousePressed, this, &Gui::mousePressed);
+            scale = _scale;
             
-            font.loadFont( fontLoc, fontSize );
-            colorManagerW.setup("assets/colors.xml");
-            colorManagerB.setup("assets/colors.xml");
+            rectWidth *= scale;
+            rectHeight *= scale;
+            padding *= scale;
+            
+            font.loadFont( fontLoc, fontSize * (scale == 1.0 ? 1.0 : scale * 1.1));
+            colorManagerW.setup("assets/colors.xml", scale);
+            colorManagerB.setup("assets/colors.xml", scale);
             colorManagerW.x = 0;
             colorManagerB.x = rectWidth/2.0;
             colorManagerW.y = rectHeight * 1.75;
@@ -208,6 +214,16 @@ namespace collins {
             }
         }
         
+        //--------------------------------------------------------------
+        ColorManager & getColorBlack(){
+            return colorManagerB;
+        }
+        
+        //--------------------------------------------------------------
+        ColorManager & getColorWhite(){
+            return colorManagerW;
+        }
+        
     protected:
         bool                    bMinimized;
         ColorManager            colorManagerB, colorManagerW;
@@ -218,6 +234,9 @@ namespace collins {
         ofTrueTypeFont font;
         std::map<string, ofColor *>  colors;
         std::map<string, float *>    floatValues;
+        
+        // retina
+        float scale;
         
         // names
         string title, color1, color2;
@@ -231,12 +250,13 @@ namespace collins {
     class Button : public ofRectangle {
     public:
         
-        void setup( string fontLoc, string t = "Save", int fontsize = GUI_FONT_SIZE ){
+        void setup( string fontLoc, string t = "Save", float scale = 1.0, int fontSize = GUI_FONT_SIZE ){
             text = t;
             bInvert = false;
-            width = GUI_WIDTH / 2.0;
-            height = GUI_HEIGHT;
-            font.loadFont( fontLoc, fontsize );
+            width = (GUI_WIDTH * scale) / 2.0;
+            height = GUI_HEIGHT * scale;
+            padding = GUI_PADDING * scale;
+            font.loadFont( fontLoc, fontSize * (scale == 1.0 ? 1.0 : scale * 1.1) );
             ofAddListener(ofEvents().draw, this, &Button::draw);
             ofAddListener(ofEvents().mouseMoved, this, &Button::mouseMoved);
             ofAddListener(ofEvents().mousePressed, this, &Button::mousePressed);
@@ -258,7 +278,7 @@ namespace collins {
             ofRect(*this);
             
             if ( bInvert ) ofSetColor(150.0);
-            font.drawString(text, x+ GUI_PADDING, y + font.getSize() + GUI_PADDING );
+            font.drawString(text, x+ padding, y + font.getSize() + padding );
             ofPopStyle();
         }
         
@@ -290,6 +310,7 @@ namespace collins {
         ofEvent<bool> onPressed;
         
     protected:
+        float padding;
         string text;
         bool bInvert;
         ofTrueTypeFont font;

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxCv.h"
 #include "ofxXmlSettings.h"
 
 class ScreenManager {
@@ -191,10 +192,12 @@ public:
             colorPairs.back().push_back(c);
             colorPairs.back().push_back(d);
         }
+        
         unsigned char * alph = img.getPixels();
         int ch = img.getPixelsRef().getNumChannels();
         ofImage clone; clone.clone(img);
         clone.setImageType(OF_IMAGE_GRAYSCALE);
+        
         ofPixelsRef p = clone.getPixelsRef();
         
         int index = 0;
@@ -216,7 +219,10 @@ public:
             index++;
         }
         img.setFromPixels(pix);
+    
     }
+    
+protected:
     
     vector< vector<ofColor> > colorPairs;
     

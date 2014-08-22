@@ -13,10 +13,11 @@
 class ColorManager : public ofVec2f {
 public:
     
-    void setup( string path = "../../../Shared/colors.xml"){
+    void setup( string path = "../../../Shared/colors.xml", float scale = 1.0){
         ofxXmlSettings xml;
         active = tempActive = -1;
         radius = 10;
+        radius *= scale;
         int x = radius * 2;
         int y = radius * 2;
         

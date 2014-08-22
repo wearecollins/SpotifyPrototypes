@@ -4,137 +4,145 @@
 			<r>80</r>
 			<g>55</g>
 			<b>80</b>
-			<title>Aubergine</title>
-		</color>
-		<color>
-			<r>-1</r>
+			<title>Dark Purple</title>
 		</color>
 		<color>
 			<r>140</r>
-			<g>20</g>
-			<b>45</b>
+			<g>25</g>
+			<b>50</b>
 			<title>Maroon</title>
 		</color>
 		<color>
-			<r>97</r>
-			<g>58</g>
-			<b>28</b>
-			<title>Chocolate Brown</title>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>48</r>
+			<r>125</r>
 			<g>75</g>
-			<b>48</b>
-			<title>Forest Green</title>
+			<b>50</b>
+			<title>Brown</title>
 		</color>
 		<color>
-			<r>29</r>
+			<r>-1</r>
+		</color>
+		<color>
+			<r>0</r>
+			<g>115</g>
+			<b>90</b>
+			<title>Green</title>
+		</color>
+		<color>
+			<r>30</r>
 			<g>50</g>
-			<b>98</b>
-			<title>Midnight Blue</title>
+			<b>100</b>
+			<title>Navy Blue</title>
 		</color>
 		<color>
-			<r>45</r>
-			<g>40</g>
-			<b>40</b>
+			<r>25</r>
+			<g>20</g>
+			<b>20</b>
 			<title>Black</title>
 		</color>
 	</set>
 	<set>
 		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>143</r>
-			<g>84</g>
-			<b>59</b>
-			<title>Bole</title>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>90</r>
-			<g>95</g>
-			<b>0</b>
-			<title>Olive</title>
-		</color>
-		<color>
-			<r>0</r>
-			<g>125</g>
-			<b>90</b>
-			<title>Emerald</title>
-		</color>
-		<color>
-			<r>45</r>
-			<g>71</g>
-			<b>186</b>
-			<title>Royal Blue</title>
-		</color>
-	</set>
-	<set>
-		<color>
-			<r>180</r>
+			<r>175</r>
 			<g>40</g>
-			<b>155</b>
-			<title>Violet</title>
+			<b>150</b>
+			<title>Purple</title>
 		</color>
 		<color>
 			<r>-1</r>
 		</color>
 		<color>
-			<r>255</r>
-			<g>65</g>
-			<b>35</b>
-			<title>Tangerine</title>
+			<r>-1</r>
 		</color>
 		<color>
-			<r>197</r>
-			<g>130</g>
-			<b>85</b>
-			<title>Tan</title>
-		</color>
-		<color>
-			<r>250</r>
+			<r>245</r>
 			<g>155</g>
 			<b>35</b>
-			<title>Gold</title>
-		</color>
-		<color>
-			<r>106</r>
-			<g>133</g>
-			<b>95</b>
-			<title>Fern</title>
+			<title>Orange</title>
 		</color>
 		<color>
 			<r>75</r>
 			<g>145</g>
 			<b>125</b>
-			<title>Spearmint</title>
+			<title>Teal</title>
 		</color>
 		<color>
-			<r>78</r>
-			<g>161</g>
-			<b>246</b>
-			<title>Azure</title>
+			<r>45</r>
+			<g>70</g>
+			<b>185</b>
+			<title>Blue</title>
 		</color>
 		<color>
-			<r>128</r>
-			<g>123</g>
-			<b>123</b>
-			<title>Storm</title>
+			<r>-1</r>
+		</color>
+	</set>
+	<set>
+		<color>
+			<r>240</r>
+			<g>55</g>
+			<b>165</b>
+			<title>Hot Pink</title>
+		</color>
+		<color>
+			<r>235</r>
+			<g>30</g>
+			<b>50</b>
+			<title>Red</title>
+		</color>
+		<color>
+			<r>-1</r>
+		</color>
+		<color>
+			<r>-1</r>
+		</color>
+		<color>
+			<r>95</r>
+			<g>245</g>
+			<b>80</b>
+			<title>Neon Green</title>
+		</color>
+		<color>
+			<r>65</r>
+			<g>0</g>
+			<b>245</b>
+			<title>Bright Blue</title>
+		</color>
+		<color>
+			<r>-1</r>
+		</color>
+	</set>
+	<set>
+		<color>
+			<r>245</r>
+			<g>115</g>
+			<b>160</b>
+			<title>Pink</title>
+		</color>
+		<color>
+			<r>255</r>
+			<g>70</g>
+			<b>50</b>
+			<title>Red Orange</title>
+		</color>
+		<color>
+			<r>-1</r>
+		</color>
+		<color>
+			<r>-1</r>
+		</color>
+		<color>
+			<r>25</r>
+			<g>230</g>
+			<b>140</b>
+			<title>Bright Green</title>
+		</color>
+		<color>
+			<r>80</r>
+			<g>155</g>
+			<b>245</b>
+			<title>Light Blue</title>
+		</color>
+		<color>
+			<r>-1</r>
 		</color>
 	</set>
 	<set>
@@ -142,137 +150,81 @@
 			<r>180</r>
 			<g>155</g>
 			<b>200</b>
-			<title>Lavender</title>
-		</color>
-		<color>
-			<r>250</r>
-			<g>113</g>
-			<b>163</b>
-			<title>Salmon</title>
+			<title>Light Purple</title>
 		</color>
 		<color>
 			<r>255</r>
 			<g>100</g>
-			<b>45</b>
-			<title>Orange</title>
+			<b>55</b>
+			<title>Deep Orange</title>
 		</color>
 		<color>
-			<r>198</r>
-			<g>156</g>
-			<b>154</b>
+			<r>200</r>
+			<g>125</g>
+			<b>85</b>
+			<title>Tan</title>
+		</color>
+		<color>
+			<r>245</r>
+			<g>230</g>
+			<b>45</b>
+			<title>Yellow</title>
+		</color>
+		<color>
+			<r>205</r>
+			<g>245</g>
+			<b>100</b>
+			<title>Lime Green</title>
+		</color>
+		<color>
+			<r>155</r>
+			<g>240</g>
+			<b>225</b>
+			<title>Sea-foam Green</title>
+		</color>
+		<color>
+			<r>-1</r>
+		</color>
+	</set>
+	<set>
+		<color>
+			<r>255</r>
+			<g>205</g>
+			<b>210</b>
+			<title>Light Pink</title>
+		</color>
+		<color>
+			<r>-1</r>
+		</color>
+		<color>
+			<r>195</r>
+			<g>150</g>
+			<b>135</b>
 			<title>Light Brown</title>
 		</color>
 		<color>
 			<r>255</r>
-			<g>208</g>
-			<b>99</b>
-			<title>Sunflower</title>
-		</color>
-		<color>
-			<r>170</r>
-			<g>190</g>
-			<b>145</b>
-			<title>Pistachio</title>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>158</r>
-			<g>195</g>
-			<b>210</b>
-			<title>Blue Grey</title>
+			<g>200</g>
+			<b>100</b>
+			<title>Light Orange</title>
 		</color>
 		<color>
 			<r>195</r>
-			<g>195</g>
-			<b>198</b>
-			<title>Mid Grey</title>
-		</color>
-	</set>
-	<set>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>255</r>
-			<g>206</g>
-			<b>194</b>
-			<title>Pink</title>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>200</r>
-			<g>245</g>
-			<b>190</b>
-			<title>Powder Green</title>
+			<g>240</g>
+			<b>185</b>
+			<title>Light Green</title>
 		</color>
 		<color>
 			<r>160</r>
-			<g>245</g>
-			<b>230</b>
-			<title>Cyan</title>
-		</color>
-		<color>
-			<r>195</r>
 			<g>195</g>
-			<b>198</b>
-			<title>Light Grey</title>
-		</color>
-	</set>
-	<set>
-		<color>
-			<r>-1</r>
+			<b>210</b>
+			<title>Charcoal Blue</title>
 		</color>
 		<color>
-			<r>240</r>
-			<g>54</g>
-			<b>169</b>
-			<title>Fuchsia</title>
-		</color>
-		<color>
-			<r>-1</r>
-		</color>
-		<color>
-			<r>245</r>
-			<g>0</g>
-			<b>31</b>
-			<title>Bright Red</title>
-		</color>
-		<color>
-			<r>247</r>
-			<g>234</g>
-			<b>48</b>
-			<title>Factory Yellow</title>
-		</color>
-		<color>
-			<r>210</r>
-			<g>252</g>
-			<b>100</b>
-			<title>Citrine Green</title>
-		</color>
-		<color>
-			<r>24</r>
-			<g>240</g>
-			<b>138</b>
-			<title>Electric Seafoam</title>
-		</color>
-		<color>
-			<r>62</r>
-			<g>0</g>
-			<b>245</b>
-			<title>Klein Blue</title>
+			<r>255</r>
+			<g>255</g>
+			<b>255</b>
+			<title>White Blue</title>
 		</color>
 	</set>
 </settings>

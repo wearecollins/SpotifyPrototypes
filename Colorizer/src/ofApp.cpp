@@ -1,9 +1,12 @@
 #include "ofApp.h"
+#include "ofAppGLFWWindow.h"
 
 bool bSaving      = false;
+bool bSaveAll     = false;
 bool bDestructive = false;
 bool bOpenAferSave = false;
 ofImage temp;
+float windowScale   = 1.0;
 
 float contrast    = 1.0;
 float lastContrast    = 1.0;
@@ -14,27 +17,38 @@ ofImage logo;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    ofSetWindowPosition(0, 0);
+    windowScale = ((ofAppGLFWWindow*) ofGetWindowPtr())->getPixelScreenCoordScale();
+    if ( windowScale != 1.0 ){
+        ofSetWindowShape(1024 * windowScale,768 * windowScale );
+    }
+    ofShowCursor();
     ofSetDataPathRoot("./");
     ofSetVerticalSync(true);
     manager.setup();
     ofAddListener(manager.onLoaded, this, &ofApp::onNewImage);
     ofAddListener(manager.onLoadedFile, this, &ofApp::onFileLoaded);
     ofAddListener(saveButton.onPressed, this, &ofApp::saveImage);
+    ofAddListener(saveAllButton.onPressed, this, &ofApp::saveAll);
     ofBackground(100);
     
-    gui.setup("assets/fonts/CircularStd-Book.ttf");
+    gui.setup("assets/fonts/CircularStd-Book.ttf", windowScale );
     gui.x = floor(ofGetWidth() - gui.getWidth()-20);
     gui.y = 20;
     gui.attachFloat("contrast", &contrast);
     
-    saveButton.setup("assets/fonts/CircularStd-Book.ttf");
+    saveButton.setup("assets/fonts/CircularStd-Book.ttf", "Save", windowScale);
     saveButton.x = ofGetWidth() - saveButton.width-20;
     saveButton.y = ofGetHeight() - saveButton.height-20;
+//    
+//    saveAllButton.setup("assets/fonts/CircularStd-Book.ttf", "Save all");
+//    saveAllButton.x = ofGetWidth() - saveButton.width-20;
+//    saveAllButton.y = ofGetHeight() - saveButton.height - saveButton.height-40;
     
-    fontMedium.loadFont("assets/fonts/CircularStd-Medium.ttf", 30);
+    fontMedium.loadFont("assets/fonts/CircularStd-Medium.ttf", 30 * windowScale);
     fontMedium.setLetterSpacing(.95);
     fontMedium.setSpaceSize(.6);
-    logo.loadImage("assets/logo.png");
+    logo.loadImage( windowScale == 1.0 ? "assets/logo.png" : "assets/logo_retina.png" );
 }
 
 //--------------------------------------------------------------
@@ -69,13 +83,40 @@ void ofApp::update(){
     }
     
     if ( bSaving ){
+        saver.saveToolTip = false;
         saver.save(manager.getRawImage(0), filter, contrast);
         bSaving = false;
+    }
+    if ( bSaveAll ){
+        ColorManager cb = gui.getColorBlack();
+        ColorManager cw = gui.getColorWhite();
+        saver.saveToolTip = true;
+        map<string, bool> stuff;
+        for ( auto & set : cb.colors){
+            for ( auto & colorB : set ){
+                for ( auto & setW : cw.colors){
+                    for ( auto & colorW : setW ){
+                        string c = ofToString(colorB.r) + ":" + ofToString(colorB.g) + ":"+ofToString(colorB.b);
+                        c += ":"+ofToString(colorW.r) + ":" + ofToString(colorW.g) + ":"+ofToString(colorW.b);
+                        
+                        if ( stuff.count(c) == 0 ){
+                            stuff[c] = true;
+                            filter.setColorPair(0, colorB, colorW);
+                            saver.save(manager.getRawImage(0), filter, contrast, false);
+                        }
+                    }
+                }
+            }
+        }
+        saver.saveToolTip = false;
+        
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    ofShowCursor();
+    
     if ( temp.isAllocated() ){
         temp.draw(ofGetWidth()/2.0 - temp.width/2.0, ofGetHeight()/2.0 - temp.height/2.0);
     } else if ( manager.size() > 0 ){
@@ -92,6 +133,11 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::saveImage( bool & b ){
     bSaving = true;
+}
+
+//--------------------------------------------------------------
+void ofApp::saveAll( bool & b ){
+    bSaveAll = true;
 }
 
 //--------------------------------------------------------------
