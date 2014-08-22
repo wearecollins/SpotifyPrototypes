@@ -141,7 +141,7 @@ void ofApp::saveAll( bool & b ){
     bSaveAll = true;
 }
 
-//
+//--------------------------------------------------------------
 void ofApp::saveAs( bool & b ){
     bSaveAs = true;
 }
@@ -150,6 +150,13 @@ void ofApp::saveAs( bool & b ){
 void ofApp::keyPressed( int k ){
 //    if ( k == 'd' ) bDestructive = !bDestructive;
 //    else if (k =='s') bSaving = true;
+    if ( k == 's' && ofGetKeyPressed(OF_KEY_COMMAND)){
+        if ( ofGetKeyPressed(OF_KEY_SHIFT)){
+            bSaveAs = true;
+        } else {
+            bSaving = true;
+        }
+    }
 }
 
 //--------------------------------------------------------------
