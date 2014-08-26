@@ -62,9 +62,9 @@ namespace collins {
         //--------------------------------------------------------------
         void update( ofEventArgs & e ){
             if ( bMouseOver ){
-                rectColor.a = rectColor.a * .9 + 200 * .1;
+                rectColor.a = rectColor.a * .6 + 200 * .4;
             } else {
-                rectColor.a = rectColor.a * .9;// + 0 * .1;
+                rectColor.a = rectColor.a * .6;// + 0 * .1;
             }
         }
         
