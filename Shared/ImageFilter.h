@@ -215,7 +215,7 @@ public:
             }
             ofImage temp; temp.setUseTexture(false);
             temp.setFromPixels(pix);
-            temp.saveImage( dir + name + "_" + ofToString( index ) + "." + ext );
+            //temp.saveImage( dir + name + "_" + ofToString( index ) + "." + ext );
             index++;
         }
         img.setFromPixels(pix);
