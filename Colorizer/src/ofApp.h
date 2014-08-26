@@ -28,11 +28,11 @@ class ofApp : public ofBaseApp{
 //        ofxUICanvas * gui;
     
         collins::Gui    gui;
-        collins::Button saveButton, saveAsButton, saveAllButton;
+        collins::Button saveButton, saveAsButton;
         void saveImage( bool & b );
-        void saveAll( bool & b );
         void saveAs( bool & b );
     
         void onNewImage( ofImage & img );
         void onFileLoaded( string & img );
+        void onSavingComplete();
 };

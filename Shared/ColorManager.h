@@ -126,6 +126,7 @@ public:
             }
         }
         tempActive = -1;
+        return ofColor(0,0);
     }
     
     ofColor getActive(){

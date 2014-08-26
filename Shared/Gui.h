@@ -212,15 +212,23 @@ namespace collins {
         
         //--------------------------------------------------------------
         void mousePressed(ofMouseEventArgs & m){
-            if (!bMinimized) colorManagerW.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
-            if (!bMinimized) colorManagerB.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
+            ofColor a,b;
+            if (!bMinimized)
+                a = colorManagerW.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
+            if (!bMinimized)
+                b = colorManagerB.checkHit(m.x - x, m.y - y, true, !ofGetKeyPressed(OF_KEY_SHIFT));
             
+            bool isContrastNew = false;
             if ( contrastRect.inside(m.x-x, m.y-y)){
                 float fx = (m.x-x) - contrastRect.x;
+                float old = *floatValues["contrast"];
                 *floatValues["contrast"] = ofMap(fx, 0, contrastRect.width, 1.0, CONTRAST_MAX, true);
+                isContrastNew = old != *floatValues["contrast"];
             } else if ( minRect.inside(m.x-x, m.y-y)){
                 bMinimized = !bMinimized;
             }
+            
+            if ( a != ofColor(0,0) || b != ofColor(0,0) || isContrastNew) bFrameNew = true;
         }
         
         //--------------------------------------------------------------
@@ -241,8 +249,15 @@ namespace collins {
             return colorManagerW;
         }
         
+        //--------------------------------------------------------------
+        bool isFrameNew(){
+            bool ret = bFrameNew;
+            bFrameNew = false;
+            return ret;
+        }
+        
     protected:
-        bool                    bMinimized, bMouseOver;
+        bool                    bMinimized, bMouseOver, bFrameNew;
         ColorManager            colorManagerB, colorManagerW;
         
         // contrast stuff
@@ -290,13 +305,13 @@ namespace collins {
         
         //--------------------------------------------------------------
         void draw(ofEventArgs & e){
-            if ( !enabled ) return;
             ofPushStyle();
             ofFill();
             ofSetColor(150,100);
             ofRect(*this);
             
-            ofSetColor(255);
+            if ( enabled ) ofSetColor(255);
+            else ofSetColor(150,100);
             
             if ( !bInvert ) ofNoFill();
             else ofFill();
@@ -310,6 +325,7 @@ namespace collins {
         
         //--------------------------------------------------------------
         void mouseMoved(ofMouseEventArgs & m ){
+            if ( !enabled ) return;
             if ( inside(m.x, m.y)){
                 bInvert = true;
             } else {
@@ -319,6 +335,7 @@ namespace collins {
 
         //--------------------------------------------------------------
         void mousePressed(ofMouseEventArgs & m){
+            if ( !enabled ) return;
             if ( inside(m.x, m.y)){
                 bInvert = true;
             }
@@ -326,6 +343,7 @@ namespace collins {
         
         //--------------------------------------------------------------
         void mouseReleased(ofMouseEventArgs & m){
+            if ( !enabled ) return;
             bInvert = false;
             if ( inside(m.x, m.y)){
                 static bool b = true;

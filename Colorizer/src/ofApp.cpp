@@ -1,11 +1,12 @@
 #include "ofApp.h"
 #include "ofAppGLFWWindow.h"
 
-bool bSaving        = false;
-bool bSaveAll       = false;
-bool bSaveAs        = false;
-bool bDestructive   = false;
-bool bOpenAferSave  = false;
+bool bSaving        = false;    // cue to start saving
+bool bSaveAs        = false;    // cue to "save as"
+bool bOpenAferSave  = false;    // placeholder
+bool bCurrentSaved  = false;    // current color config has been saved?
+bool bSaveProcess   = false;    // save thread is running? false = OK to save again
+
 ofImage temp;
 float windowScale   = 1.0;
 
@@ -35,8 +36,8 @@ void ofApp::setup(){
     ofAddListener(manager.onLoaded, this, &ofApp::onNewImage);
     ofAddListener(manager.onLoadedFile, this, &ofApp::onFileLoaded);
     ofAddListener(saveButton.onPressed, this, &ofApp::saveImage);
-    ofAddListener(saveAllButton.onPressed, this, &ofApp::saveAll);
     ofAddListener(saveAsButton.onPressed, this, &ofApp::saveAs);
+    ofAddListener(saver.onComplete, this, &ofApp::onSavingComplete);
     ofBackground(100);
     
     gui.setup("assets/fonts/CircularStd-Book.ttf", windowScale );
@@ -66,7 +67,18 @@ void ofApp::update(){
     if ( manager.size() == 0 ){
         return;
     }
-    saveAsButton.enabled = saveButton.enabled = temp.isAllocated();
+    
+    if ( temp.isAllocated() && !bSaveProcess){
+        saveAsButton.enabled = true;
+        bool colorsNew = gui.isFrameNew();
+        if ( bCurrentSaved ) bCurrentSaved = !colorsNew;
+        
+        if ( !colorsNew && bCurrentSaved ){
+            saveButton.enabled = false;
+        } else {
+            saveButton.enabled = true;
+        }
+    }
     
     vector<ofColor> colors = gui.getActive();
     
@@ -94,12 +106,17 @@ void ofApp::update(){
     }
     
     if ( bSaving ){
+        saveAsButton.enabled = saveButton.enabled = false;
+        bCurrentSaved = true;
+        bSaveProcess = true;
         saver.saveToolTip = false;
         saver.save(manager.getRawImage(0), filter, contrast, filePath);
         bSaving = false;
     }
     if ( bSaveAs ){
+        saveAsButton.enabled = saveButton.enabled = false;
         saver.saveToolTip = false;
+        bSaveProcess = true;
         ofFileDialogResult folder = ofSystemLoadDialog("Choose destination", true);
         if (folder.bSuccess ){
             filePath = folder.getPath();
@@ -143,18 +160,12 @@ void ofApp::saveImage( bool & b ){
 }
 
 //--------------------------------------------------------------
-void ofApp::saveAll( bool & b ){
-    bSaveAll = true;
-}
-
-//--------------------------------------------------------------
 void ofApp::saveAs( bool & b ){
     bSaveAs = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed( int k ){
-//    if ( k == 'd' ) bDestructive = !bDestructive;
 //    else if (k =='s') bSaving = true;
     if ( k == 's' && ofGetKeyPressed(OF_KEY_COMMAND)){
         if ( ofGetKeyPressed(OF_KEY_SHIFT)){
@@ -203,4 +214,9 @@ void ofApp::onNewImage( ofImage & img ){
 //--------------------------------------------------------------
 void ofApp::onFileLoaded( string & img ){
     gui.setTitle(img);
+}
+
+//--------------------------------------------------------------
+void ofApp::onSavingComplete(){
+    bSaveProcess = false;
 }

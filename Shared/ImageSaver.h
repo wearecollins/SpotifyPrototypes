@@ -63,9 +63,12 @@ public:
     
     void threadedFunction(){
         process();
+        ofNotifyEvent(onComplete);
     }
     
     bool saveToolTip;
+    
+    ofEvent <void> onComplete;
     
 protected:
     ofImage temp;
