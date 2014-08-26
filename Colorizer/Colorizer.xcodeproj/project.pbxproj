@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0126F26B19AD3AA3000C949B /* Gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0126F26A19AD3AA3000C949B /* Gui.cpp */; };
 		01ED24F3193D1E4F0009DC51 /* assets in CopyFiles */ = {isa = PBXBuildFile; fileRef = 01ED24F2193D1E4D0009DC51 /* assets */; };
 		10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A810DF70319A10353588F5DB /* Tracker.cpp */; };
 		169D3C72FDE6C5590A1616F5 /* ofxCvFloatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B6A03390302D5A2C9F0E4AB /* ofxCvFloatImage.cpp */; };
@@ -94,6 +95,7 @@
 
 /* Begin PBXFileReference section */
 		011E372AEA4DFBC1A32C2851 /* all_indices.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = all_indices.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/all_indices.h; sourceTree = SOURCE_ROOT; };
+		0126F26A19AD3AA3000C949B /* Gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Gui.cpp; path = ../../Shared/Gui.cpp; sourceTree = "<group>"; };
 		014AB65119A66A62009151C8 /* ImageSaver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImageSaver.h; path = ../../Shared/ImageSaver.h; sourceTree = "<group>"; };
 		0173A3F435DECD5A4DDE0B8E /* logger.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = logger.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/logger.h; sourceTree = SOURCE_ROOT; };
 		017A8BAB193BA699001B3D3A /* ImageFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImageFilter.h; path = ../../Shared/ImageFilter.h; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 			children = (
 				01ED24E6193D05660009DC51 /* ColorManager.h */,
 				01ED24E4193D053A0009DC51 /* Gui.h */,
+				0126F26A19AD3AA3000C949B /* Gui.cpp */,
 			);
 			name = "Colorizer GUI";
 			sourceTree = "<group>";
@@ -899,6 +902,7 @@
 				F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */,
 				EBCDE831EFAE08274E799C97 /* Calibration.cpp in Sources */,
 				6AABAB39E82AF5CFEA23A205 /* ContourFinder.cpp in Sources */,
+				0126F26B19AD3AA3000C949B /* Gui.cpp in Sources */,
 				45CC483A999BF1065A6B926C /* Distance.cpp in Sources */,
 				5CC34D433F5806179935B89D /* Flow.cpp in Sources */,
 				2023EF517ED2D8B397511D4B /* Helpers.cpp in Sources */,
