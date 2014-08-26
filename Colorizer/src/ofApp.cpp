@@ -1,38 +1,43 @@
 #include "ofApp.h"
 #include "ofAppGLFWWindow.h"
 
-bool bSaving        = false;    // cue to start saving
-bool bSaveAs        = false;    // cue to "save as"
-bool bOpenAferSave  = false;    // placeholder
-bool bCurrentSaved  = false;    // current color config has been saved?
-bool bSaveProcess   = false;    // save thread is running? false = OK to save again
+bool bSaving        = false;        // cue to start saving
+bool bSaveAs        = false;        // cue to "save as"
+bool bOpenAferSave  = false;        // placeholder
+bool bCurrentSaved  = false;        // current color config has been saved?
+bool bSaveProcess   = false;        // save thread is running? false = OK to save again
 
-ofImage temp;
-float windowScale   = 1.0;
+ofImage drawImage;                  // image drawing to screen
+float windowScale   = 1.0;          // variable for retina rendering
 
-float contrast    = 1.0;
-float lastContrast    = 1.0;
-ofColor c, d;
+float contrast    = 1.0;            // current contrast
+float lastContrast    = 1.0;        // last setting (i.e. "do we need to process contrast?"
+ofColor lastColorFg, lastColorBg;   // last color settings
 
-ofTrueTypeFont fontMedium;
-ofImage logo;
+ofTrueTypeFont fontMedium;          // "Drag Here..." font
+ofImage logo;                       // GUI logo
 
-string filePath = "../../../";
+string filePath = "../../../";      // starting directory (i.e. next to app)
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetWindowPosition(0, 0);
+    
+    // are we retina or not?
     windowScale = ((ofAppGLFWWindow*) ofGetWindowPtr())->getPixelScreenCoordScale();
     if ( windowScale != 1.0 ){
         ofSetWindowShape(1024 * windowScale,768 * windowScale );
     }
     ofShowCursor();
+    
+    // OS X bundles all assets into app. Windows isn't so lucky!
 #ifdef TARGET_OSX
     ofSetDataPathRoot("./");
 #endif
     
     ofSetVerticalSync(true);
     manager.setup();
+    
     ofAddListener(manager.onLoaded, this, &ofApp::onNewImage);
     ofAddListener(manager.onLoadedFile, this, &ofApp::onFileLoaded);
     ofAddListener(saveButton.onPressed, this, &ofApp::saveImage);
@@ -40,6 +45,7 @@ void ofApp::setup(){
     ofAddListener(saver.onComplete, this, &ofApp::onSavingComplete);
     ofBackground(100);
     
+    // build GUI
     gui.setup("assets/fonts/CircularStd-Book.ttf", windowScale );
     gui.x = floor(ofGetWidth() - gui.getWidth()-20);
     gui.y = 20;
@@ -50,7 +56,6 @@ void ofApp::setup(){
     saveButton.y = ofGetHeight() - saveButton.height-20;
     saveButton.enabled = false;
     
-//    
     saveAsButton.setup("assets/fonts/CircularStd-Book.ttf", "Save As", windowScale);
     saveAsButton.x = ofGetWidth() - saveButton.width-20;
     saveAsButton.y = ofGetHeight() - saveButton.height - saveButton.height-40;
@@ -64,11 +69,13 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    // are there images?
     if ( manager.size() == 0 ){
         return;
     }
     
-    if ( temp.isAllocated() && !bSaveProcess){
+    // save/save as button enabled/disabled
+    if ( drawImage.isAllocated() && !bSaveProcess){
         saveAsButton.enabled = true;
         bool colorsNew = gui.isFrameNew();
         if ( bCurrentSaved ) bCurrentSaved = !colorsNew;
@@ -80,31 +87,37 @@ void ofApp::update(){
         }
     }
     
+    // do we need to process our image / show on screen?
+    
     vector<ofColor> colors = gui.getActive();
     
-    bool process = ((colors.size() == 2 && (c != colors[0] || d != colors[1])) || lastContrast != contrast);
+    bool process = ((colors.size() == 2 && (lastColorFg != colors[0] || lastColorBg != colors[1])) || lastContrast != contrast);
     
     if ( process ){
+        // scale to screen, run preview contrast
         float scale = fmin( (float) ofGetWidth()/manager.getRawImage(0).width, (float) ofGetHeight()/manager.getRawImage(0).height );
         manager.getImage(0).resize(manager.getRawImage(0).width * scale, manager.getRawImage(0).height * scale);
-        temp.clone(manager.getImage(0));
+        drawImage.clone(manager.getImage(0));
         static cv::Mat mat;
         static cv::Mat p;
-        mat = ofxCv::toCv(temp);
+        mat = ofxCv::toCv(drawImage);
         mat.convertTo(p, -1,contrast,0);
-        ofxCv::toOf(p, temp);
-        temp.update();
+        ofxCv::toOf(p, drawImage);
+        drawImage.update();
         lastContrast = contrast;
     }
     
     if ( colors.size() < 2 ) return;
+    
+    // process live colors
     if ( process ){
         filter.setColorPair(0, colors[1], colors[0]);
-        filter.process(temp);
-        c.set(colors[0]);
-        d.set(colors[1]);
+        filter.process(drawImage);
+        lastColorFg.set(colors[0]);
+        lastColorBg.set(colors[1]);
     }
     
+    // save / save ass
     if ( bSaving ){
         saveAsButton.enabled = saveButton.enabled = false;
         bCurrentSaved = true;
@@ -125,18 +138,20 @@ void ofApp::update(){
         bSaveAs = false;
     }
     
-    //setApplicationIconImage
+    //setApplicationIconImage <- for another day
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofShowCursor();
     
-    if ( temp.isAllocated() ){
-        float scale = MAX( (float) ofGetWidth()/ temp.width, (float) ofGetHeight() / temp.height);
-        temp.draw(ofGetWidth()/2.0 - temp.width * scale / 2.0, ofGetHeight()/2.0 - temp.height * scale/2.0, temp.width * scale, temp.height * scale);
+    // draw preview image?
+    if ( drawImage.isAllocated() ){
+        float scale = MAX( (float) ofGetWidth()/ drawImage.width, (float) ofGetHeight() / drawImage.height);
+        drawImage.draw(ofGetWidth()/2.0 - drawImage.width * scale / 2.0, ofGetHeight()/2.0 - drawImage.height * scale/2.0, drawImage.width * scale, drawImage.height * scale);
+    
+    // currently loading image
     } else if ( manager.size() > 0 ){
-        //manager.getImage(0).draw(ofGetWidth()/2.0 - manager.getImage(0).width/2.0, ofGetHeight()/2.0 - manager.getImage(0).height/2.0);
         string str = "Loading";
         int count = fabs(sin(ofGetElapsedTimeMillis() * .01 )) * 3;
         for ( int i=0; i<count; i++){
@@ -145,6 +160,8 @@ void ofApp::draw(){
         float w = fontMedium.stringWidth("Loading...");
         float h = fontMedium.stringHeight("Loading...");
         fontMedium.drawString(str, ofGetWidth()/2.0 - w/2.0, ofGetHeight()/2.0 - h/2.0 + fontMedium.getSize());
+    
+    // no image, hook me up!
     } else {
         float w = fontMedium.stringWidth("Drag image here");
         float h = fontMedium.stringHeight("Drag image here");
@@ -177,23 +194,6 @@ void ofApp::keyPressed( int k ){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
 void ofApp::windowResized( int w, int h ){
     gui.x = fmax(20, floor(ofGetWidth() - gui.getWidth()-20));
     gui.y = 20;
@@ -207,8 +207,8 @@ void ofApp::windowResized( int w, int h ){
 //--------------------------------------------------------------
 void ofApp::onNewImage( ofImage & img ){
     lastContrast = -1;
-    c.set(255);
-    d.set(255);
+    lastColorFg.set(255);
+    lastColorBg.set(255);
 }
 
 //--------------------------------------------------------------
@@ -220,3 +220,9 @@ void ofApp::onFileLoaded( string & img ){
 void ofApp::onSavingComplete(){
     bSaveProcess = false;
 }
+
+//--------------------------------------------------------------
+void ofApp::mouseMoved(int x, int y ){}
+void ofApp::mouseDragged(int x, int y, int button){}
+void ofApp::mousePressed(int x, int y, int button){}
+void ofApp::mouseReleased(int x, int y, int button){}

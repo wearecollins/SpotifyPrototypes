@@ -25,8 +25,6 @@ class ofApp : public ofBaseApp{
         ColorFilter  filter;
         ImageSaver   saver;
     
-//        ofxUICanvas * gui;
-    
         collins::Gui    gui;
         collins::Button saveButton, saveAsButton;
         void saveImage( bool & b );
