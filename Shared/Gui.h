@@ -27,8 +27,14 @@ namespace collins {
         
         bool enabled;
         
-        ofColor backgroundFill;
+        ofColor backgroundFill, backgroundFillInactive;
         void setTitle( string t );
+        
+        ofColor borderColor, borderColorInactive;
+        ofColor textColor, textColorInactive;
+        
+        void overrideInvert( bool inv );
+        bool isInverted();
         
     protected:
         float padding;

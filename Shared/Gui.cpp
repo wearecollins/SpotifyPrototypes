@@ -52,11 +52,10 @@ namespace collins {
         
         minRect.set(rectWidth-padding-(rectHeight-padding*2.0),padding, (rectHeight-padding*2.0), (rectHeight-padding*2.0));
         
-        rectColor.set(180, 0);
-        randomizeButton.backgroundFill.set(rectColor);
+        rectColor.set(255, 0);
         
         // setup randomize button
-        randomizeButton.setup( fontLoc, "Randomize", _scale );
+        randomizeButton.setup( fontLoc, "Randomise", _scale );
         randomizeButton.x = x;
         randomizeButton.y = y + height;
         
@@ -66,11 +65,16 @@ namespace collins {
     //--------------------------------------------------------------
     void Gui::update( ofEventArgs & e ){
         if ( bMouseOver ){
-            rectColor.a = rectColor.a * .6 + 200 * .4;
+            rectColor.a = rectColor.a * .6 + 150 * .4;
+            //borderColor = borderColor * .9 + 255 * .1;
+            //if ( !randomizeButton.isInverted() ) randomizeButton.overrideInvert(true);
         } else {
             rectColor.a = rectColor.a * .6;// + 0 * .1;
+            //borderColor = borderColor * .9 + 255 * .1;
+            //if ( randomizeButton.isInverted() )randomizeButton.overrideInvert(false);
         }
-        randomizeButton.backgroundFill.set(rectColor);
+        randomizeButton.borderColor = randomizeButton.textColorInactive = borderColor;
+        randomizeButton.backgroundFillInactive.set(rectColor);
     }
     
     //--------------------------------------------------------------
@@ -274,7 +278,12 @@ namespace collins {
 #pragma mark Button
     
     Button::Button() : ofRectangle(),
-    backgroundFill(255,0){
+    backgroundFillInactive(255,0),
+    backgroundFill(255),
+    borderColorInactive(150,100),
+    borderColor(255),
+    textColor(150),
+    textColorInactive(255){
         enabled = true;
     }
     
@@ -297,20 +306,41 @@ namespace collins {
     //--------------------------------------------------------------
     void Button::draw(ofEventArgs & e){
         ofPushStyle();
-        ofFill();
-        ofSetColor(backgroundFill);
-        ofRect(*this);
         
-        if ( enabled ) ofSetColor(255);
-        else ofSetColor(150,100);
+        if ( !enabled ){
+            ofSetColor(borderColorInactive);
+            ofRect(*this);
+            ofNoFill();
+            ofSetLineWidth(2.0);
+            ofRect(*this);
+            font.drawString(text, x+ padding, y + font.getSize() + padding );
+        } else {
+            // mouse over
+            if ( bInvert ){
+                ofSetColor(backgroundFill);
+                ofRect(*this);
+                
+                ofSetColor(borderColor);
+                ofNoFill();
+                ofSetLineWidth(2.0);
+                ofRect(*this);
+                
+                ofSetColor(textColor);
+                
+            // mouse out
+            } else {
+                ofSetColor(backgroundFillInactive);
+                ofRect(*this);
+                ofSetColor(borderColor);
+                ofNoFill();
+                ofSetLineWidth(2.0);
+                ofRect(*this);
+                
+                ofSetColor(textColorInactive);
+            }
+            font.drawString(text, x+ padding, y + font.getSize() + padding );
+        }
         
-        if ( !bInvert ) ofNoFill();
-        else ofFill();
-        ofSetLineWidth(2.0);
-        ofRect(*this);
-        
-        if ( bInvert ) ofSetColor(150.0);
-        font.drawString(text, x+ padding, y + font.getSize() + padding );
         ofPopStyle();
     }
     
@@ -340,6 +370,16 @@ namespace collins {
             static bool b = true;
             ofNotifyEvent(onPressed, b, this);
         }
+    }
+    
+    //--------------------------------------------------------------
+    void Button::overrideInvert( bool inv ){
+        bInvert = inv;
+    }
+    
+    //--------------------------------------------------------------
+    bool Button::isInverted(){
+        return bInvert;
     }
     
     //--------------------------------------------------------------
