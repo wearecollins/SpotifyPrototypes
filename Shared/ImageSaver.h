@@ -14,20 +14,24 @@ class ImageSaver : public ofThread {
 public:
     
     ImageSaver() :
-    saveToolTip(false),
-    directory("../../../"){
+    saveToolTip(false)
+    {
         
     }
     
-    void save( ofImage img, ColorFilter & _filter, float _contrast, string dir = "../../../", bool bThread = true ){
+    void save( ofImage img, ColorFilter & _filter, float _contrast, string file = "", bool bThread = true ){
         img.setUseTexture(false);
         temp.setUseTexture(false);
         temp.clone(img);
         filter = &_filter;
         contrast = _contrast;
-        directory = dir;
-        if ( directory.substr(directory.size()-1, 1) != "/"){
-            directory += "/";
+        if ( file == "" ) file = "image_"+ofGetTimestampString()+"_"+ofToString(floor(ofRandom(100))) + ".png";
+                                                                                
+        fileName = file;
+        ofFile test(fileName);
+        string ext = ofToLower(test.getExtension());
+        if ( ext != ".png" && ext != ".jpeg" && ext != ".jpg" ){
+            fileName += ".png";
         }
         
         if ( bThread ) startThread();
@@ -42,7 +46,7 @@ public:
         t_mat.convertTo(t_p, -1,contrast,0);
         ofxCv::toOf(t_p, temp);
         filter->process(temp);
-        string str = "image_"+ofGetTimestampString()+"_"+ofToString(floor(ofRandom(100)));
+        string str = fileName;
         if ( saveToolTip ){
             ofImage a,b;
             a.setUseTexture(false);
@@ -55,10 +59,10 @@ public:
                     b.setColor(i, j, filter->getColorPair(0)->at(1));
                 }
             }
-            a.saveImage( directory + str +"_color1" +".png" );
-            b.saveImage( directory + str +"_color2" +".png" );
+//            a.saveImage( str +"_color1" +".png" );
+//            b.saveImage( str +"_color2" +".png" );
         }
-        temp.saveImage( directory + str +".png");
+        temp.saveImage( str );
     }
     
     void threadedFunction(){
@@ -74,5 +78,5 @@ protected:
     ofImage temp;
     float contrast;
     ColorFilter * filter;
-    string directory;
+    string fileName;
 };

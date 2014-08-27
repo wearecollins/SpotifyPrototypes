@@ -2,9 +2,7 @@
 #include "ofAppGLFWWindow.h"
 
 bool bSaving        = false;        // cue to start saving
-bool bSaveAs        = false;        // cue to "save as"
 bool bOpenAferSave  = false;        // placeholder
-bool bCurrentSaved  = false;        // current color config has been saved?
 bool bSaveProcess   = false;        // save thread is running? false = OK to save again
 
 ofImage drawImage;                  // image drawing to screen
@@ -16,8 +14,6 @@ ofColor lastColorFg, lastColorBg;   // last color settings
 
 ofTrueTypeFont fontMedium;          // "Drag Here..." font
 ofImage logo;                       // GUI logo
-
-string filePath = "../../../";      // starting directory (i.e. next to app)
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -41,7 +37,6 @@ void ofApp::setup(){
     ofAddListener(manager.onLoaded, this, &ofApp::onNewImage);
     ofAddListener(manager.onLoadedFile, this, &ofApp::onFileLoaded);
     ofAddListener(saveButton.onPressed, this, &ofApp::saveImage);
-    ofAddListener(saveAsButton.onPressed, this, &ofApp::saveAs);
     ofAddListener(saver.onComplete, this, &ofApp::onSavingComplete);
     ofBackground(100);
     
@@ -55,11 +50,6 @@ void ofApp::setup(){
     saveButton.x = ofGetWidth() - saveButton.width-20;
     saveButton.y = ofGetHeight() - saveButton.height-20;
     saveButton.enabled = false;
-    
-    saveAsButton.setup("assets/fonts/CircularStd-Book.ttf", "Save As", windowScale);
-    saveAsButton.x = ofGetWidth() - saveButton.width-20;
-    saveAsButton.y = ofGetHeight() - saveButton.height - saveButton.height-40;
-    saveAsButton.enabled = false;
     
     fontMedium.loadFont("assets/fonts/CircularStd-Medium.ttf", 30 * windowScale);
     fontMedium.setLetterSpacing(.95);
@@ -76,15 +66,7 @@ void ofApp::update(){
     
     // save/save as button enabled/disabled
     if ( drawImage.isAllocated() && !bSaveProcess){
-        saveAsButton.enabled = true;
-        bool colorsNew = gui.isFrameNew();
-        if ( bCurrentSaved ) bCurrentSaved = !colorsNew;
-        
-        if ( !colorsNew && bCurrentSaved ){
-            saveButton.enabled = false;
-        } else {
-            saveButton.enabled = true;
-        }
+        saveButton.enabled = true;
     }
     
     // do we need to process our image / show on screen?
@@ -119,23 +101,17 @@ void ofApp::update(){
     
     // save / save ass
     if ( bSaving ){
-        saveAsButton.enabled = saveButton.enabled = false;
-        bCurrentSaved = true;
+        saveButton.enabled = false;
         bSaveProcess = true;
         saver.saveToolTip = false;
-        saver.save(manager.getRawImage(0), filter, contrast, filePath);
-        bSaving = false;
-    }
-    if ( bSaveAs ){
-        saveAsButton.enabled = saveButton.enabled = false;
-        saver.saveToolTip = false;
-        bSaveProcess = true;
-        ofFileDialogResult folder = ofSystemLoadDialog("Choose destination", true);
+        
+        ofFileDialogResult folder = ofSystemSaveDialog("image_"+ofGetTimestampString()+"_"+ofToString(floor(ofRandom(100))) + ".png",
+                                                       "Set name and directory of file. Save as .png or .jpg.");
         if (folder.bSuccess ){
-            filePath = folder.getPath();
+            string filePath = folder.getPath();
             saver.save(manager.getRawImage(0), filter, contrast, filePath);
         }
-        bSaveAs = false;
+        bSaving = false;
     }
     
     //setApplicationIconImage <- for another day
@@ -177,19 +153,10 @@ void ofApp::saveImage( bool & b ){
 }
 
 //--------------------------------------------------------------
-void ofApp::saveAs( bool & b ){
-    bSaveAs = true;
-}
-
-//--------------------------------------------------------------
 void ofApp::keyPressed( int k ){
 //    else if (k =='s') bSaving = true;
     if ( k == 's' && ofGetKeyPressed(OF_KEY_COMMAND)){
-        if ( ofGetKeyPressed(OF_KEY_SHIFT)){
-            bSaveAs = true;
-        } else {
-            bSaving = true;
-        }
+        bSaving = true;
     }
 }
 
@@ -200,8 +167,6 @@ void ofApp::windowResized( int w, int h ){
     
     saveButton.x = fmax(20, ofGetWidth() - saveButton.width-20);
     saveButton.y = fmax(gui.y + gui.getHeight() + saveButton.height + 40, ofGetHeight() - saveButton.height-20);
-    saveAsButton.x = fmax(20, ofGetWidth() - saveButton.width-20);
-    saveAsButton.y = fmax(gui.y + gui.getHeight() + 20, ofGetHeight() - saveButton.height - saveButton.height-40);
 }
 
 //--------------------------------------------------------------

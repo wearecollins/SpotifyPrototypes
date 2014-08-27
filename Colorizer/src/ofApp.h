@@ -26,9 +26,8 @@ class ofApp : public ofBaseApp{
         ImageSaver   saver;
     
         collins::Gui    gui;
-        collins::Button saveButton, saveAsButton;
+        collins::Button saveButton;
         void saveImage( bool & b );
-        void saveAs( bool & b );
     
         void onNewImage( ofImage & img );
         void onFileLoaded( string & img );
