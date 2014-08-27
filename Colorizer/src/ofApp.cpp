@@ -1,5 +1,7 @@
 #include "ofApp.h"
+#ifdef RETINA_CAPABLE
 #include "ofAppGLFWWindow.h"
+#endif
 
 bool bSaving        = false;        // cue to start saving
 bool bOpenAferSave  = false;        // placeholder
@@ -19,11 +21,15 @@ ofImage logo;                       // GUI logo
 void ofApp::setup(){
     ofSetWindowPosition(0, 0);
     
+#ifdef RETINA_CAPABLE
     // are we retina or not?
     windowScale = ((ofAppGLFWWindow*) ofGetWindowPtr())->getPixelScreenCoordScale();
     if ( windowScale != 1.0 ){
         ofSetWindowShape(1024 * windowScale,768 * windowScale );
     }
+#else
+    ofSetCircleResolution(100);
+#endif
     ofShowCursor();
     
     // OS X bundles all assets into app. Windows isn't so lucky!
@@ -101,8 +107,6 @@ void ofApp::update(){
     
     // save / save ass
     if ( bSaving ){
-        saveButton.enabled = false;
-        bSaveProcess = true;
         saver.saveToolTip = false;
         
         ofFileDialogResult folder = ofSystemSaveDialog("image_"+ofGetTimestampString()+"_"+ofToString(floor(ofRandom(100))) + ".png",
@@ -110,9 +114,14 @@ void ofApp::update(){
         if (folder.bSuccess ){
             string filePath = folder.getPath();
             saver.save(manager.getRawImage(0), filter, contrast, filePath);
+            saveButton.setTitle("Saving...");
+            saveButton.enabled = false;
+            bSaveProcess = true;
+        } else {
+            saveButton.enabled = true;
+            bSaveProcess = false;
         }
         
-        saveButton.setTitle("Saving...");
         bSaving = false;
     }
     

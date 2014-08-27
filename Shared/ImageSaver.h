@@ -30,7 +30,7 @@ public:
         fileName = file;
         ofFile test(fileName);
         string ext = ofToLower(test.getExtension());
-        if ( ext != ".png" && ext != ".jpeg" && ext != ".jpg" ){
+        if ( ext != "png" && ext != "jpeg" && ext != "jpg" ){
             fileName += ".png";
         }
         
