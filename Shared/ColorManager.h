@@ -18,10 +18,10 @@ public:
     void setup( string path = "../../../Shared/colors.xml", float scale = 1.0){
         ofxXmlSettings xml;
         active = tempActive = -1;
-        radius = 10;
+        radius = 12.5;
         radius *= scale;
-        int x = radius * 2;
-        int y = radius * 2;
+        float x = radius * 2;
+        float y = radius * 2;
         
         if ( xml.load(ofToDataPath(path, true)) ){
             xml.pushTag("settings");
@@ -153,9 +153,9 @@ public:
         return ret;
     }
     
-    ofColor randomize(){
+    ofVec2f randomize(int startRow = 0, int endRow = -1){
         ofColor ret(0,0);
-        int ind = floor(ofRandom(colors.size()));
+        int ind = floor(ofRandom(startRow, min(colors.size(), endRow == -1 ? colors.size() : endRow )));
         active = ind * 10 + floor(ofRandom(colors[ind].size()));
         for ( int i=0; i<colors.size(); i++ ){
             for ( int j=0; j<colors[i].size(); j++ ){
@@ -164,7 +164,7 @@ public:
                 }
             }
         }
-        return ret;
+        return ofVec2f(ind, active);
     }
     
     vector<vector<ofColor> > colors;
@@ -172,7 +172,7 @@ public:
     
 protected:
     
-    int radius;
+    float radius;
     vector<vector<ofVec2f> > positions;
     int active;
     int tempActive;

@@ -155,7 +155,8 @@ void ofApp::draw(){
         fontMedium.drawString("Drag image here", ofGetWidth()/2.0 - w/2.0, ofGetHeight()/2.0 - h/2.0 + fontMedium.getSize());
     }
     ofSetColor(255);
-    logo.draw(20,27);
+    if ( ofGetWidth() > gui.getWidth() * 1.5)
+        logo.draw(20,27);
 }
 
 //--------------------------------------------------------------

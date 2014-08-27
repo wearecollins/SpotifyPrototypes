@@ -48,7 +48,7 @@ namespace collins {
         colorManagerB.x = rectWidth/2.0;
         colorManagerW.y = rectHeight * 1.75;
         colorManagerB.y = rectHeight * 1.75;
-        height = 600;
+        height = 620;
         
         minRect.set(rectWidth-padding-(rectHeight-padding*2.0),padding, (rectHeight-padding*2.0), (rectHeight-padding*2.0));
         
@@ -109,9 +109,9 @@ namespace collins {
         if ( !bMinimized ){
             font.drawString( "[b] "+color1, x + padding, y + font.getSize() + padding * 1.25);
             font.drawString( "[w] "+color2, x + rectWidth/2.0 + padding, y + font.getSize() + padding * 1.25);
-            ofRect(0, y, rectWidth/2.0, rectHeight * 5.0);
-            ofRect(rectWidth/2.0, y, rectWidth/2.0, rectHeight * 5.0);
-            y += rectHeight * 5.0;
+            ofRect(0, y, rectWidth/2.0, rectHeight * 5.75);
+            ofRect(rectWidth/2.0, y, rectWidth/2.0, rectHeight * 5.75);
+            y += rectHeight * 5.75;
             colorManagerB.draw();
             colorManagerW.draw();
             contrastRect.set(padding, y + rectHeight, rectWidth - padding * 2, rectHeight);
@@ -182,8 +182,8 @@ namespace collins {
     
     //--------------------------------------------------------------
     void Gui::randomize(){
-        colorManagerW.randomize();
-        colorManagerB.randomize();
+        int row = colorManagerW.randomize(0, colorManagerW.colors.size()-1 ).x;
+        colorManagerB.randomize(row + floor(ofRandom(1, (int)(colorManagerB.colors.size() - row) )));
     }
     
     //--------------------------------------------------------------
