@@ -111,6 +111,8 @@ void ofApp::update(){
             string filePath = folder.getPath();
             saver.save(manager.getRawImage(0), filter, contrast, filePath);
         }
+        
+        saveButton.setTitle("Saving...");
         bSaving = false;
     }
     
@@ -184,6 +186,7 @@ void ofApp::onFileLoaded( string & img ){
 //--------------------------------------------------------------
 void ofApp::onSavingComplete(){
     bSaveProcess = false;
+    saveButton.setTitle("Save");
 }
 
 //--------------------------------------------------------------

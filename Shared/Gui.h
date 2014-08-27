@@ -28,6 +28,7 @@ namespace collins {
         bool enabled;
         
         ofColor backgroundFill;
+        void setTitle( string t );
         
     protected:
         float padding;

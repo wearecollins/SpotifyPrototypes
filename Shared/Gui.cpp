@@ -341,5 +341,10 @@ namespace collins {
             ofNotifyEvent(onPressed, b, this);
         }
     }
+    
+    //--------------------------------------------------------------
+    void Button::setTitle( string t ){
+        text = t;
+    }
 }
 
